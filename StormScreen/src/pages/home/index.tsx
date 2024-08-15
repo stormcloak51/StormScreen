@@ -1,62 +1,110 @@
-import { BookmarkIcon, DownloadIcon, FilmIcon, PopcornIcon, TvIcon, UserIcon } from 'lucide-react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Home = () => {
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+} from '@/components/ui/carousel'
+import { fetchTrending } from '@/services/api'
+import { setTrending } from '@/store/home/slice'
+import { RootState } from '@/store/store'
+
+export const Home = () => {
+	// const [image, setImg] = React.useState<string>('')
+	const isLoaded = React.useRef(false)
+
+	const trendingData = useSelector((state: RootState) => state.homeSlice.trending)
+	const dispatch = useDispatch()
+	// const options = {
+	// 	method: 'GET',
+	// 	url: 'https://api.themoviedb.org/3/movie/popular',
+	// 	params: {language: 'en-US', page: '1'},
+	// 	headers: {
+	// 		accept: 'application/json',
+	// 		Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YmI3MmYzZWUxODkwZTRiMDAwZGY0MDJkYmVmYjBlMCIsIm5iZiI6MTcyMzcwMDE3Mi41MDcxOTMsInN1YiI6IjY2YmQ5MjQyYTAwNmM3ZDY0YTg5MWQzMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vOEMVUmfYRllIoZL6WiBFCq9XghlIZQhwNb6Q3Mo24U'
+	// 	}
+	// };
+
+	// const response = axios
+	// 	.request(options)
+	// 	.then(function (response) {
+	// 		console.log(response.data.results[0].id);
+	// 	})
+	// 	.catch(function (error) {
+	// 		console.error(error);
+	// 	});
+
+	// console.log();
+	// const options = {
+	// 	method: 'GET',
+	// 	url: 'https://api.themoviedb.org/3/movie/123',
+	// 	params: {language: 'en-US'},
+	// 	headers: {
+	// 		accept: 'application/json',
+	// 		Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YmI3MmYzZWUxODkwZTRiMDAwZGY0MDJkYmVmYjBlMCIsIm5iZiI6MTcyMzcwMDE3Mi41MDcxOTMsInN1YiI6IjY2YmQ5MjQyYTAwNmM3ZDY0YTg5MWQzMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vOEMVUmfYRllIoZL6WiBFCq9XghlIZQhwNb6Q3Mo24U'
+	// 	}
+	// };
+
+	// axios
+	// 	.request(options)
+	// 	.then(function (response) {
+	// 		console.log(response.data.poster_path);
+	// 	})
+	// 	.catch(function (error) {
+	// 		console.error(error);
+	// 	});
+	// axios
+	// 	.request(options)
+	// 	.then(function (response) {
+	// 		console.log(response.data);
+	// 	})
+	// 	.catch(function (error) {
+	// 		console.error(error);
+	// 	});
+
+	React.useEffect(() => {
+		fetchTrending().then(res => {
+			dispatch(setTrending((res.results)));
+			console.log(1)
+		});
+		isLoaded.current = true
+	}, [])
+	console.log(isLoaded.current, trendingData)
+
+
 	return (
-		<main className='rounded-xl border bg-card text-card-foreground shadow'>
-			<h1 className='mt-[50px] text-center text-5xl font-inter font-bold text-gradient'>
-				StormScreen - the best Film Library
-			</h1>
-			<section className='mt-[150px] grid grid-cols-3 grid-rows-2 mx-10 gap-y-8 gap-x-8'>
-				<div className='flex flex-col items-start gap-4 p-6 rounded-lg bg-background shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
-					<FilmIcon className='w-8 h-8 text-primary' color='red' />
-					<h3 className='text-xl font-bold'>Vast Library</h3>
-					<p className='text-muted-foreground'>
-						Explore our extensive collection of films and TV series, spanning a wide range of genres
-						and eras.
-					</p>
-				</div>
-				<div className='flex flex-col items-start gap-4 p-6 rounded-lg bg-background shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
-					<TvIcon className='w-8 h-8 text-primary' color='red'/>
-					<h3 className='text-xl font-bold'>Curated Recommendations</h3>
-					<p className='text-muted-foreground'>
-						Our team of experts curates personalized recommendations based on your viewing history
-						and preferences.
-					</p>
-				</div>
-				<div className='flex flex-col items-start gap-4 p-6 rounded-lg bg-background shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
-					<PopcornIcon className='w-8 h-8 text-primary' color='red'/>
-					<h3 className='text-xl font-bold'>Seamless Streaming</h3>
-					<p className='text-muted-foreground'>
-						Enjoy a seamless streaming experience with high-quality video and audio, optimized for
-						any device.
-					</p>
-				</div>
-				<div className='flex flex-col items-start gap-4 p-6 rounded-lg bg-background shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
-					<BookmarkIcon className='w-8 h-8 text-primary' color='red'/>
-					<h3 className='text-xl font-bold'>Personalized Watchlist</h3>
-					<p className='text-muted-foreground'>
-						Create your own personalized watchlist to keep track of the shows and movies you want to
-						watch.
-					</p>
-				</div>
-				<div className='flex flex-col items-start gap-4 p-6 rounded-lg bg-background shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
-					<DownloadIcon className='w-8 h-8 text-primary' color='red'/>
-					<h3 className='text-xl font-bold'>Offline Viewing</h3>
-					<p className='text-muted-foreground'>
-						Download your favorite content to watch offline, perfect for on-the-go or areas with
-						limited internet access.
-					</p>
-				</div>
-				<div className='flex flex-col items-start gap-4 p-6 rounded-lg bg-background shadow-lg transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
-					<UserIcon className='w-8 h-8 text-primary' color='red'/>
-					<h3 className='text-xl font-bold'>Personalized Profiles</h3>
-					<p className='text-muted-foreground'>
-						Create individual profiles for each family member, allowing personalized recommendations
-						and watchlists.
-					</p>
-				</div>
+		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px]'>
+			<section>
+				<h1>Trending</h1>
+				<Carousel>
+					<CarouselContent>
+						{
+							isLoaded.current && trendingData ? (
+								trendingData.map(obj => {
+									return (
+										<CarouselItem className='w-full relative aspect-[16/9] overflow-hidden' key={obj.id}>
+											<img className='rounded w-full h-full object-cover' src={`https://image.tmdb.org/t/p/original${obj.poster_path}`} />
+										</CarouselItem>
+									)
+								})
+							)
+								: (
+									<>
+										<CarouselItem>... </CarouselItem>
+										<CarouselItem>... </CarouselItem>
+										<CarouselItem>... </CarouselItem>
+									</>
+									
+								)
+						}
+					</CarouselContent>
+					<CarouselPrevious />
+					<CarouselNext />
+				</Carousel>
 			</section>
 		</main>
 	)
 }
-export default Home

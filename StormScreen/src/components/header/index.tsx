@@ -12,7 +12,7 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Clapperboard, Film, House, Settings } from 'lucide-react'
+import { Clapperboard, Film, House, Settings, Slash } from 'lucide-react'
 
 // 
 export default function Header() {
@@ -46,8 +46,8 @@ export default function Header() {
 									Home
 								</BreadcrumbLink>
 							</BreadcrumbItem>
-							<BreadcrumbSeparator />
-							<BreadcrumbItem>
+							<BreadcrumbSeparator className='translate-y-[2px] scale-[1.5]'><Slash /></BreadcrumbSeparator>
+							{/* <BreadcrumbItem>
 								<BreadcrumbLink className='text-2xl' href='/components'>
 									Films
 								</BreadcrumbLink>
@@ -55,7 +55,7 @@ export default function Header() {
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
 								<BreadcrumbPage className='text-2xl'>Star Wars</BreadcrumbPage>
-							</BreadcrumbItem>
+							</BreadcrumbItem> */}
 						</BreadcrumbList>
 					</Breadcrumb>
 					<div className='profile flex ml-auto items-center justify-self-end'>

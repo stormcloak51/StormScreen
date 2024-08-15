@@ -1,8 +1,8 @@
 
-import './indexOutput.css'
 
+
+import { Outlet } from 'react-router-dom'
 import Header from './components/header'
-import Home from './pages/home'
 // import { Button } from './components/ui/button'
 
 
@@ -11,7 +11,7 @@ export function App() {
 		<>
 			<Header/>
 			<div className='pl-[100px] pr-[24px]'>
-				<Home />
+				<Outlet/>
 			</div>
 		</>
 	)
