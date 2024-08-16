@@ -67,39 +67,44 @@ export const Home = () => {
 
 	React.useEffect(() => {
 		fetchTrending().then(res => {
-			dispatch(setTrending((res.results)));
+			dispatch(setTrending(res.results))
 			console.log(1)
-		});
+		})
 		isLoaded.current = true
 	}, [])
 	console.log(isLoaded.current, trendingData)
 
-
 	return (
 		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px]'>
 			<section>
-				<h1>Trending</h1>
+				<h1 className='mt-[25px] text-5xl font-inter font-bold text-gradient mb-[10px] leading-tight'>
+					Trending
+				</h1>
 				<Carousel>
-					<CarouselContent>
-						{
-							isLoaded.current && trendingData ? (
-								trendingData.map(obj => {
-									return (
-										<CarouselItem className='w-full relative aspect-[16/9] overflow-hidden' key={obj.id}>
-											<img className='rounded w-full h-full object-cover' src={`https://image.tmdb.org/t/p/original${obj.poster_path}`} />
-										</CarouselItem>
-									)
-								})
-							)
-								: (
-									<>
-										<CarouselItem>... </CarouselItem>
-										<CarouselItem>... </CarouselItem>
-										<CarouselItem>... </CarouselItem>
-									</>
-									
+					<CarouselContent className=''>
+						{isLoaded.current && trendingData ? (
+							trendingData.map(obj => {
+								return (
+									<CarouselItem className='relative transition-all duration-300' key={obj.id}>
+										<img
+											className='rounded-xl justify-center items-center mx-auto transition-all duration-300 hover:backdrop-blur-sm'
+											src={`https://image.tmdb.org/t/p/original${obj.backdrop_path}`}
+										/>
+										<div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-1 group-hover:opacity-1 transition-opacity duration-300'>
+						
+											<div>{obj.title}</div>
+										
+										</div>
+									</CarouselItem>
 								)
-						}
+							})
+						) : (
+							<>
+								<CarouselItem>... </CarouselItem>
+								<CarouselItem>... </CarouselItem>
+								<CarouselItem>... </CarouselItem>
+							</>
+						)}
 					</CarouselContent>
 					<CarouselPrevious />
 					<CarouselNext />

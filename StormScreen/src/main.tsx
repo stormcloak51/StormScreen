@@ -9,6 +9,7 @@ import { App } from './App.tsx'
 import { Home } from './pages/home/index.tsx'
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const router = createBrowserRouter([
   {
@@ -37,10 +38,14 @@ const router = createBrowserRouter([
   },
 ]);
 
+export const Client = new QueryClient()
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <QueryClientProvider client={Client}>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </QueryClientProvider>
   </StrictMode>,
 )
