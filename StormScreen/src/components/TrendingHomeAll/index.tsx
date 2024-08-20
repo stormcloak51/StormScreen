@@ -1,45 +1,45 @@
-import { Button } from '@/components/ui/button'
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel'
-import { fetchPopular } from '@/services/api'
-import { setTrendingMovies } from '@/store/home/slice'
-import { RootState } from '@/store/store'
 import { changeFilmDescription } from '@/utils/changeFilmDescription'
+import { Button } from '../ui/button'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel'
+import { setTrending } from '@/store/home/slice'
 import Autoplay from 'embla-carousel-autoplay'
+import { fetchTrending } from '@/services/api'
+import { RootState } from '@/store/store'
 import { useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-export const Movies = () => {
+export default function TrendingHomeAll() {
 	const isLoaded = useRef(false)
 	const dispatch = useDispatch()
 
-	const { trendingMovies } = useSelector(
+	const { trending } = useSelector(
 		(state: RootState) => state.homeSlice,
 	)
 
 
 	const fetchData = (type: string) => {
-		fetchPopular(type)
+		fetchTrending(type)
 			.then(res => {
-				dispatch(setTrendingMovies(res.results))
+				dispatch(setTrending(res.results))
 			})
 			.catch(err => console.log(err))
 	}
 
 	useEffect(() => {
 		if (!isLoaded.current) {
-			fetchData('movie')
+			fetchData('all')
 			isLoaded.current = true
 		}
 	}, [])
 
-
-
 	return (
-		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px]'>
-			<section>
-				<h1 className='mt-[25px] text-5xl font-inter font-bold trending-gradient mb-[10px] leading-tight'>Trending Movies</h1>
-				<Carousel
+		<>
+			<h1 className='mt-[25px] text-5xl font-inter font-bold trending-gradient mb-[10px] leading-tight'>
+				Trending
+			</h1>
+
+			<Carousel
 				opts={{
 					align: 'center',
 					watchDrag: true,
@@ -47,8 +47,8 @@ export const Movies = () => {
 				plugins={[Autoplay({ delay: 3000 })]}
 				className=''>
 				<CarouselContent className=''>
-					{isLoaded.current && trendingMovies ? (
-						trendingMovies.data.map(obj => {
+					{isLoaded.current && trending ? (
+						trending.data.map(obj => {
 							return (
 								<CarouselItem
 									className='relative transition-all duration-300 basis-1/2'
@@ -87,7 +87,6 @@ export const Movies = () => {
 				<CarouselPrevious />
 				<CarouselNext />
 			</Carousel>
-			</section>
-		</main>
+		</>
 	)
 }

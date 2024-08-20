@@ -10,6 +10,7 @@ import { Home } from './pages/home/index.tsx'
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import MoviePage from './pages/movies/MoviePage/index.tsx'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "movies",
         element: <Movies />,
+      },
+      {
+        path: "movies/:id",
+        element: <MoviePage />,
       },
       {
         path: "serials",
