@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { fetchVideos, searchAll } from '@/services/api'
 import { selectorMovie, selectorMovieVideo } from '@/store/movies/selectors'
 import { setMovie, setMovieVideo } from '@/store/movies/slice'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import ReactPlayer from 'react-player'
@@ -11,18 +11,16 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Copy } from 'lucide-react'
+// import { Input } from "@/components/ui/input"
+// import { Label } from "@/components/ui/label"
+// import { Copy } from 'lucide-react'
 
 const MoviePage = () => {
-	const isOpened = useRef(false)
 	const movieItem = useSelector(selectorMovie)
 	const movieVideo = useSelector(selectorMovieVideo)
 	console.log(movieVideo)
