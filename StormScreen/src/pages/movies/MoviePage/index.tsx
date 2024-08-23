@@ -1,9 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { fetchVideos, searchAll } from '@/services/api'
-import { selectorMovie, selectorMovieVideo } from '@/store/movies/selectors'
-import { setMovie, setMovieVideo } from '@/store/movies/slice'
-import React, { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ReactPlayer from 'react-player'
 
@@ -11,31 +7,34 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Copy } from 'lucide-react'
+import { useGetMovieQuery, useGetMovieVideoQuery } from '@/store/apiSlices/movies'
 
 const MoviePage = () => {
-	const isOpened = useRef(false)
-	const movieItem = useSelector(selectorMovie)
-	const movieVideo = useSelector(selectorMovieVideo)
-	console.log(movieVideo)
+	// const isOpened = useRef(false)
+	// const movieItem = useSelector(selectorMovie)
+	// const movieVideo = useSelector(selectorMovieVideo)
 	const searchParams = useParams()
-	const dispatch = useDispatch()
+
+	const { data: movieData, isSuccess } = useGetMovieQuery(+(searchParams.id ?? NaN))
+	const { data: videoData, isSuccess: isSuccessVideo } = useGetMovieVideoQuery({type: 'movie', id: +(searchParams.id ?? NaN)})
+
+	if (isSuccess) console.log('faradance', videoData)
+
+	// const dispatch = useDispatch()
 	useEffect(() => {
-		if (searchParams.id) {
-			fetchVideos('movie', searchParams.id).then(res => {
-				dispatch(setMovieVideo(res))
-			})
-			searchAll('movie', searchParams.id).then(res => {
-				dispatch(setMovie(res))
-			})
+		if (searchParams.id && isSuccess) {
+
+			// fetchVideos('movie', searchParams.id).then(res => {
+			// 	dispatch(setMovieVideo(res))
+			// })
+
+			// dispatch(setMovie(data))
+			
 		}
 	}, [])
 	return (
@@ -43,23 +42,23 @@ const MoviePage = () => {
 			<section className='flex w-full justify-between'>
 				<div className='flex-shrink-0'>
 					<img
-						src={`https://image.tmdb.org/t/p/original${movieItem.poster_path}`}
+						src={`https://image.tmdb.org/t/p/original${movieData?.poster_path}`}
 						alt=''
 						className='w-[300px] rounded-xl'
 					/>
 				</div>
 				<div className='flex-grow ml-4 border-l pl-3 pr-[150px]'>
 					<h1 className='text-3xl font-inter font-bold mb-[10px] leading-tight'>
-						{movieItem.title}
+						{movieData?.title}
 					</h1>
-					<p className='leading-7 [&:not(:first-child)]:mt-6'>{movieItem.overview}</p>
+					<p className='leading-7 [&:not(:first-child)]:mt-6'>{movieData?.overview}</p>
 					<Dialog>
 						<DialogTrigger asChild>
 							<Button className=''>Watch Trailer</Button>
 						</DialogTrigger>
 						<DialogContent className='sm:max-w-2xl px-4'>
 							<DialogHeader>
-								<DialogTitle>{movieItem.title} - Trailer</DialogTitle>
+								<DialogTitle>{movieData?.title} - Trailer</DialogTitle>
 								{/* <DialogDescription>
 									.
 								</DialogDescription> */}
@@ -79,7 +78,7 @@ const MoviePage = () => {
 									<span className='sr-only'>Copy</span>
 									<Copy className='h-4 w-4' />
 								</Button> */}
-								<ReactPlayer url={`https://www.youtube.com/watch?v=${movieVideo?.results[0]?.key}`} controls={true}/>
+								{!isSuccessVideo ? <p>Loading...</p> : <ReactPlayer url={`https://www.youtube.com/watch?v=${videoData?.results[0]?.key}`} playing/>}
 							</div>
 							<DialogFooter className='sm:justify-start'>
 								<DialogClose asChild>
@@ -92,7 +91,7 @@ const MoviePage = () => {
 					</Dialog>
 				</div>
 				<div className='flex-shrink-0'>
-					<h1>{movieItem.vote_average.toFixed(1)}</h1>
+					<h1>{movieData?.vote_average.toFixed(1)}</h1>
 				</div>
 			</section>
 		</main>
