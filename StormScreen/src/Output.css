@@ -988,6 +988,16 @@ video {
   margin-bottom: 0.25rem;
 }
 
+.mx-\[10px\] {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.mx-\[15px\] {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
 .-ml-4 {
   margin-left: -1rem;
 }
@@ -1100,6 +1110,18 @@ video {
   display: inline-block;
 }
 
+.ml-\[20px\] {
+  margin-left: 20px;
+}
+
+.mr-\[10px\] {
+  margin-right: 10px;
+}
+
+.ml-\[30px\] {
+  margin-left: 30px;
+}
+
 .inline {
   display: inline;
 }
@@ -1160,6 +1182,7 @@ video {
   display: grid;
 }
 
+<<<<<<< HEAD
 .inline-grid {
   display: inline-grid;
 }
@@ -1172,6 +1195,8 @@ video {
   display: list-item;
 }
 
+=======
+>>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 .hidden {
   display: none;
 }
@@ -1240,8 +1265,13 @@ video {
   max-height: 24rem;
 }
 
+<<<<<<< HEAD
 .max-h-screen {
   max-height: 100vh;
+=======
+.max-h-\[300px\] {
+  max-height: 300px;
+>>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 }
 
 .w-10 {
@@ -1605,6 +1635,7 @@ video {
   overflow: hidden;
 }
 
+<<<<<<< HEAD
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1617,6 +1648,14 @@ video {
 
 .text-clip {
   text-overflow: clip;
+=======
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+>>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 }
 
 .whitespace-nowrap {
@@ -1823,6 +1862,20 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.bg-slate-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -1931,6 +1984,29 @@ video {
   padding-bottom: 8px;
 }
 
+<<<<<<< HEAD
+=======
+.py-\[30px\] {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+>>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -2140,6 +2216,10 @@ video {
 
 .tracking-tight {
   letter-spacing: -0.025em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
 }
 
 .text-black {
@@ -2709,6 +2789,10 @@ video {
   pointer-events: none;
 }
 
+.data-\[disabled\=true\]\:pointer-events-none[data-disabled="true"] {
+  pointer-events: none;
+}
+
 .data-\[side\=bottom\]\:translate-y-1[data-side="bottom"] {
   --tw-translate-y: 0.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -2777,17 +2861,32 @@ video {
   background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
 
+.data-\[selected\=\'true\'\]\:bg-slate-100[data-selected='true'] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+}
+
 .data-\[state\=open\]\:text-slate-500[data-state="open"] {
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
+}
+
+.data-\[selected\=true\]\:text-slate-900[data-selected="true"] {
+  --tw-text-opacity: 1;
+  color: rgb(15 23 42 / var(--tw-text-opacity));
 }
 
 .data-\[disabled\]\:opacity-50[data-disabled] {
   opacity: 0.5;
 }
 
+<<<<<<< HEAD
 .data-\[swipe\=move\]\:transition-none[data-swipe="move"] {
   transition-property: none;
+=======
+.data-\[disabled\=true\]\:opacity-50[data-disabled="true"] {
+  opacity: 0.5;
+>>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 }
 
 .data-\[state\=open\]\:animate-in[data-state="open"] {
@@ -3050,9 +3149,19 @@ video {
   background-color: rgb(30 41 59 / var(--tw-bg-opacity));
 }
 
+.dark\:data-\[selected\=\'true\'\]\:bg-slate-800[data-selected='true']:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+}
+
 .dark\:data-\[state\=open\]\:text-slate-400[data-state="open"]:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity));
+}
+
+.dark\:data-\[selected\=true\]\:text-slate-50[data-selected="true"]:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(248 250 252 / var(--tw-text-opacity));
 }
 
 @media (min-width: 640px) {
@@ -3197,6 +3306,74 @@ video {
 .\[\&\[data-state\=open\]\>svg\]\:rotate-180[data-state=open]>svg {
   --tw-rotate: 180deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.\[\&_\[cmdk-group-heading\]\]\:px-2 [cmdk-group-heading] {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.\[\&_\[cmdk-group-heading\]\]\:py-1\.5 [cmdk-group-heading] {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+
+.\[\&_\[cmdk-group-heading\]\]\:text-xs [cmdk-group-heading] {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.\[\&_\[cmdk-group-heading\]\]\:font-medium [cmdk-group-heading] {
+  font-weight: 500;
+}
+
+.\[\&_\[cmdk-group-heading\]\]\:text-slate-500 [cmdk-group-heading] {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity));
+}
+
+.dark\:\[\&_\[cmdk-group-heading\]\]\:text-slate-400 [cmdk-group-heading]:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity));
+}
+
+.\[\&_\[cmdk-group\]\:not\(\[hidden\]\)_\~\[cmdk-group\]\]\:pt-0 [cmdk-group]:not([hidden]) ~[cmdk-group] {
+  padding-top: 0px;
+}
+
+.\[\&_\[cmdk-group\]\]\:px-2 [cmdk-group] {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.\[\&_\[cmdk-input-wrapper\]_svg\]\:h-5 [cmdk-input-wrapper] svg {
+  height: 1.25rem;
+}
+
+.\[\&_\[cmdk-input-wrapper\]_svg\]\:w-5 [cmdk-input-wrapper] svg {
+  width: 1.25rem;
+}
+
+.\[\&_\[cmdk-input\]\]\:h-12 [cmdk-input] {
+  height: 3rem;
+}
+
+.\[\&_\[cmdk-item\]\]\:px-2 [cmdk-item] {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.\[\&_\[cmdk-item\]\]\:py-3 [cmdk-item] {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.\[\&_\[cmdk-item\]_svg\]\:h-5 [cmdk-item] svg {
+  height: 1.25rem;
+}
+
+.\[\&_\[cmdk-item\]_svg\]\:w-5 [cmdk-item] svg {
+  width: 1.25rem;
 }
 
 .\[\&_p\]\:leading-relaxed p {

@@ -1,6 +1,9 @@
+import MovieList from '@/components/MovieList'
+
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel'
 import { fetchPopular } from '@/services/api'
+import { useGetNowPlayingQuery } from '@/store/apiSlices/movies'
 import { setTrendingMovies } from '@/store/home/slice'
 import { RootState } from '@/store/store'
 import { changeFilmDescription } from '@/utils/changeFilmDescription'
@@ -12,6 +15,8 @@ import { Link } from 'react-router-dom'
 export const Movies = () => {
 	const isLoaded = useRef(false)
 	const dispatch = useDispatch()
+
+	const { data: nowPlayingMovies, isSuccess } = useGetNowPlayingQuery()
 
 	const { trendingMovies } = useSelector(
 		(state: RootState) => state.homeSlice,
@@ -87,6 +92,11 @@ export const Movies = () => {
 				<CarouselPrevious />
 				<CarouselNext />
 			</Carousel>
+			{
+				isSuccess && (
+					<MovieList data={nowPlayingMovies} title='Now Playing'/>
+				)
+			}
 			</section>
 		</main>
 	)

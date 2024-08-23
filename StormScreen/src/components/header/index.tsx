@@ -10,16 +10,24 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { Input } from '@/components/ui/input'
+
 import { searchAll } from '@/services/api'
 import { Clapperboard, Film, House, Settings, Slash } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 import SkeletonBreadcrumb from './SkeletonBreadcrumb'
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
+import { useGetMoviesQuery } from '@/store/apiSlices/movies'
 
 //
 export default function Header() {
 	// const isLoaded = useRef(false)
+	const [open, setOpen] = useState(false)
+	const inputRef = useRef<HTMLInputElement>(null)
+	const [searchValue, setSearchValue] = useState('')
+	const { data: searchData } = useGetMoviesQuery(searchValue)
 	const params = useParams()
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -46,6 +54,16 @@ export default function Header() {
 			setPathBreadcrumb(path)
 		}
 	}, [location.pathname])
+
+
+	const handleSearch = () => {
+		setSearchValue(inputRef.current?.value || '')
+	}
+
+	const searchMovies = () => {
+		console.log(searchData)
+		setOpen(false)
+	}
 
 	return (
 		<>
@@ -112,26 +130,29 @@ export default function Header() {
 							) : (
 								<SkeletonBreadcrumb />
 							)}
-
-							{/* <BreadcrumbItem>
-													<BreadcrumbLink className='text-2xl' href='/components'>
-														Films
-													</BreadcrumbLink>
-												</BreadcrumbItem>
-												<BreadcrumbSeparator />
-												<BreadcrumbItem>
-													<BreadcrumbPage className='text-2xl'>Star Wars</BreadcrumbPage>
-												</BreadcrumbItem> */}
 						</BreadcrumbList>
 					</Breadcrumb>
 
 					<div className='profile flex ml-auto items-center justify-self-end'>
-						<Avatar className='ml-auto'>
+						<Input placeholder='Search' onClick={() => setOpen(true)}/>
+						<Avatar className='ml-[30px] mr-[10px]'>
 							<AvatarImage src='https://i.pinimg.com/736x/62/d8/f5/62d8f5c6c60a9869bb35660f2db1bd09.jpg' />
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
-						<Badge className='ml-[10px] h-[25px]'>stormcloak51</Badge>
+						<Badge className='h-[25px]'>stormcloak51</Badge>
 					</div>
+					<CommandDialog open={open} onOpenChange={setOpen}>
+						
+						<CommandInput ref={inputRef} placeholder='Type a command or search...' onValueChange={handleSearch} value={searchValue} />
+						<CommandList>
+							<CommandEmpty>No results found.</CommandEmpty>
+							<CommandGroup heading='Suggestions'>
+								<CommandItem onSelect={searchMovies}>Search for {searchValue} in movies</CommandItem>
+								<CommandItem onClick={() => {}}>Search for {searchValue} in serials</CommandItem>
+								<CommandItem onClick={() => {}}>Search for {searchValue}</CommandItem>
+							</CommandGroup>
+						</CommandList>
+					</CommandDialog>
 				</section>
 			</header>
 		</>

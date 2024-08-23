@@ -9,7 +9,6 @@ import Header from './components/header'
 // 	QueryClientProvider,
 // } from '@tanstack/react-query'
 import { ThemeProvider } from './components/theme-provider'
-import { Toaster } from "@/components/ui/toaster"
 export function App() {
 	// const qClient = useQueryClient()
 	// const query = useQuery({ queryKey: ['movies'], queryFn: fetchTrending })
@@ -18,8 +17,7 @@ export function App() {
 	// }
 	return (
 		<>
-			<ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
-				<Toaster />
+			<ThemeProvider defaultTheme='light'>
 				<Header />
 				<div className='pl-[100px] pr-[24px]'>
 					<Outlet />
