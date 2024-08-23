@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { selectorMovieVideo } from '@/store/movies/selectors'
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import ReactPlayer from 'react-player'
 
@@ -15,9 +17,8 @@ import {
 import { useGetMovieQuery, useGetMovieVideoQuery } from '@/store/apiSlices/movies'
 
 const MoviePage = () => {
-	// const isOpened = useRef(false)
-	// const movieItem = useSelector(selectorMovie)
-	// const movieVideo = useSelector(selectorMovieVideo)
+	const movieVideo = useSelector(selectorMovieVideo)
+	console.log(movieVideo)
 	const searchParams = useParams()
 
 	const { data: movieData, isSuccess } = useGetMovieQuery(+(searchParams.id ?? NaN))
