@@ -1182,7 +1182,6 @@ video {
   display: grid;
 }
 
-<<<<<<< HEAD
 .inline-grid {
   display: inline-grid;
 }
@@ -1195,8 +1194,6 @@ video {
   display: list-item;
 }
 
-=======
->>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 .hidden {
   display: none;
 }
@@ -1265,13 +1262,8 @@ video {
   max-height: 24rem;
 }
 
-<<<<<<< HEAD
-.max-h-screen {
-  max-height: 100vh;
-=======
 .max-h-\[300px\] {
   max-height: 300px;
->>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 }
 
 .w-10 {
@@ -1635,27 +1627,12 @@ video {
   overflow: hidden;
 }
 
-<<<<<<< HEAD
-.truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.text-ellipsis {
-  text-overflow: ellipsis;
-}
-
-.text-clip {
-  text-overflow: clip;
-=======
 .overflow-y-auto {
   overflow-y: auto;
 }
 
 .overflow-x-hidden {
   overflow-x: hidden;
->>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 }
 
 .whitespace-nowrap {
@@ -1984,29 +1961,6 @@ video {
   padding-bottom: 8px;
 }
 
-<<<<<<< HEAD
-=======
-.py-\[30px\] {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.py-3 {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
->>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -2880,13 +2834,8 @@ video {
   opacity: 0.5;
 }
 
-<<<<<<< HEAD
 .data-\[swipe\=move\]\:transition-none[data-swipe="move"] {
   transition-property: none;
-=======
-.data-\[disabled\=true\]\:opacity-50[data-disabled="true"] {
-  opacity: 0.5;
->>>>>>> e87c4bf0c2c789879d2c00a6931ae37d2ac5a57f
 }
 
 .data-\[state\=open\]\:animate-in[data-state="open"] {
