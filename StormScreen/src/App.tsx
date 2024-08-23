@@ -18,7 +18,7 @@ export function App() {
 	// }
 	return (
 		<>
-			<ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+			<ThemeProvider defaultTheme='light'>
 				<Header />
 				<div className='pl-[100px] pr-[24px]'>
 					<Outlet />
