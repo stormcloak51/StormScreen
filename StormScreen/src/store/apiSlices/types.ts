@@ -11,3 +11,14 @@ export interface MoviesProps {
 	total_pages: number,
 	total_results: number
 }
+
+export type MovieProviders = {
+	results: {
+		US: {
+			rent: {
+				logo_path: string,
+				provider_name: string,
+			}[],
+		}
+	}
+}

@@ -19,7 +19,6 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 import SkeletonBreadcrumb from './SkeletonBreadcrumb'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
-import { useGetMoviesQuery } from '@/store/apiSlices/movies'
 
 //
 export default function Header() {
@@ -27,7 +26,6 @@ export default function Header() {
 	const [open, setOpen] = useState(false)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [searchValue, setSearchValue] = useState('')
-	const { data: searchData } = useGetMoviesQuery(searchValue)
 	const params = useParams()
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -61,8 +59,8 @@ export default function Header() {
 	}
 
 	const searchMovies = () => {
-		console.log(searchData)
 		setOpen(false)
+		navigate(`/movies/search/?searchFor=${searchValue}`)
 	}
 
 	return (
@@ -136,8 +134,8 @@ export default function Header() {
 					<div className='profile flex ml-auto items-center justify-self-end'>
 						<Input placeholder='Search' onClick={() => setOpen(true)}/>
 						<Avatar className='ml-[30px] mr-[10px]'>
-							<AvatarImage src='https://i.pinimg.com/736x/62/d8/f5/62d8f5c6c60a9869bb35660f2db1bd09.jpg' />
-							<AvatarFallback>CN</AvatarFallback>
+							<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
+							<AvatarFallback>G</AvatarFallback>
 						</Avatar>
 						<Badge className='h-[25px]'>stormcloak51</Badge>
 					</div>
