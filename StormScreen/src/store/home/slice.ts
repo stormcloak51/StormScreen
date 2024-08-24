@@ -4,6 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 export type Item = {
 	backdrop_path: string,
 	id: number,
+	popularity: number,
 	media_type: string,
 	overview: string,
 	poster_path: string,

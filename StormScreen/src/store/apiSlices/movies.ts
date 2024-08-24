@@ -12,18 +12,18 @@ export const api = createApi({
     baseUrl: 'https://api.themoviedb.org/3/',
   }),
 
-  tagTypes: ['Movie'],
+  tagTypes: ['Movie', 'List'],
   endpoints: (build) => ({
 		getMovies: build.query<types.MoviesProps, string>({
 			query: (value) => ({
 				url: `search/movie`,
 				params: {
 					query: value,
-					api_key: apiKey
+					api_key: apiKey,
 				}
 			}),
 			providesTags: (result) => {
-				return result?.results?.map((item) => ({ type: 'Movie', id: item.id })) || []
+				return [{type: 'List', id: result?.results[0].id}]
 			}
 		}),
     // The query accepts a number and returns a Post

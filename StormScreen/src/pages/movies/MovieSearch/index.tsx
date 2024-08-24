@@ -4,15 +4,19 @@ import { useGetMoviesQuery } from '@/store/apiSlices/movies'
 import { Item } from '@/store/home/slice'
 import { FC } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import sortBy from 'lodash/sortBy';
 
 const MovieSearch: FC = () => {
 	const [urlParams] = useSearchParams()
 	const searchValue = urlParams.get('searchFor')
 	// console.log(qUrl)
 
-	const { data: searchData } = useGetMoviesQuery(searchValue || '')
 
-	console.log(searchData)
+	const { data: searchData } = useGetMoviesQuery(searchValue || '')
+	
+	const copiedResults = sortBy(searchData?.results, ['popularity']).reverse()
+
+
 
 	return (
 		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px]'>
@@ -20,20 +24,20 @@ const MovieSearch: FC = () => {
 				<h1 className='mt-[25px] text-5xl font-inter font-bold trending-gradient mb-[10px] leading-tight'>
 					Search Results
 				</h1>
-				<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 auto-rows-auto'>
+				<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 auto-rows-auto'>
 					{searchData &&
-						searchData.results.map((movie: Item) => {
+						copiedResults?.map((movie: Item) => {
 
 							if (!movie.poster_path) {
 								return null
 							}
 
 							return (
-							<div className='w-[200px] p-1 rounded-xl'>
+							<div className='w-[200px] p-1 rounded-xl' onClick={() => console.log(movie.popularity)}>
 								<Card className='rounded-xl'>
 									<CardContent className='p-0 flex flex-col items-center justify-center group relative'>
 										<img
-											className='object-cover transition-all duration-300 group-hover:blur-sm rounded-xl'
+											className='object-cover transition-all duration-300 group-hover:blur-sm rounded-xl h-[278px]'
 											src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
 											alt={`${movie.title} poster`}
 											loading='eager'
