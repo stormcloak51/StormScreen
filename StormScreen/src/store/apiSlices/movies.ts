@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type { Item } from '../home/slice'
 import { VideoProps } from '../movies/slice'
 import * as types from './types'
+import { FiltersProps } from '@/components/filters'
 
 const apiKey = `6bb72f3ee1890e4b000df402dbefb0e0`
 
@@ -19,6 +20,18 @@ export const api = createApi({
 				url: `search/movie`,
 				params: {
 					query: value,
+					api_key: apiKey,
+				}
+			}),
+			providesTags: (result) => {
+				return [{type: 'List', id: result?.results[0].id}]
+			}
+		}),
+		getFilteredMovies: build.query<types.MoviesProps, FiltersProps>({
+			query: (queryParams) => ({
+				url: `discover/movie`,
+				params: {
+					...queryParams,
 					api_key: apiKey,
 				}
 			}),
@@ -99,4 +112,4 @@ export const api = createApi({
   }),
 })
 
-export const { useGetMovieQuery, useGetMovieVideoQuery, useGetMoviesQuery, useGetNowPlayingQuery, useGetMovieProvidersQuery, useGetPopularQuery, useGetTopRatedQuery, useGetUpcomingQuery } = api
+export const { useGetMovieQuery, useGetMovieVideoQuery, useGetMoviesQuery, useGetNowPlayingQuery, useGetMovieProvidersQuery, useGetPopularQuery, useGetTopRatedQuery, useGetUpcomingQuery, useGetFilteredMoviesQuery } = api

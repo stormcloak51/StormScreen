@@ -8,6 +8,7 @@ import {
 	CarouselPrevious,
 	CarouselNext,
 } from '@/components/ui/carousel'
+
 import { fetchPopular } from '@/services/api'
 import {
 	useGetNowPlayingQuery,

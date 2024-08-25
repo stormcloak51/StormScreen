@@ -10,6 +10,7 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+
 import { Input } from '@/components/ui/input'
 
 import { searchAll } from '@/services/api'
@@ -18,7 +19,15 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 import SkeletonBreadcrumb from './SkeletonBreadcrumb'
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
+import {
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from '../ui/command'
+import Filters from '../filters'
 
 //
 export default function Header() {
@@ -53,7 +62,6 @@ export default function Header() {
 		}
 	}, [location.pathname])
 
-
 	const handleSearch = () => {
 		setSearchValue(inputRef.current?.value || '')
 	}
@@ -62,6 +70,7 @@ export default function Header() {
 		setOpen(false)
 		navigate(`/movies/search/?searchFor=${searchValue}`)
 	}
+
 
 	return (
 		<>
@@ -132,7 +141,8 @@ export default function Header() {
 					</Breadcrumb>
 
 					<div className='profile flex ml-auto items-center justify-self-end'>
-						<Input placeholder='Search' onClick={() => setOpen(true)}/>
+						<Filters />
+						<Input className='ml-[30px]' placeholder='Search' onClick={() => setOpen(true)} />
 						<Avatar className='ml-[30px] mr-[10px]'>
 							<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
 							<AvatarFallback>G</AvatarFallback>
@@ -140,12 +150,18 @@ export default function Header() {
 						<Badge className='h-[25px]'>stormcloak51</Badge>
 					</div>
 					<CommandDialog open={open} onOpenChange={setOpen}>
-						
-						<CommandInput ref={inputRef} placeholder='Type a command or search...' onValueChange={handleSearch} value={searchValue} />
+						<CommandInput
+							ref={inputRef}
+							placeholder='Type a command or search...'
+							onValueChange={handleSearch}
+							value={searchValue}
+						/>
 						<CommandList>
 							<CommandEmpty>No results found.</CommandEmpty>
 							<CommandGroup heading='Suggestions'>
-								<CommandItem onSelect={searchMovies}>Search for {searchValue} in movies</CommandItem>
+								<CommandItem onSelect={searchMovies}>
+									Search for {searchValue} in movies
+								</CommandItem>
 								<CommandItem onClick={() => {}}>Search for {searchValue} in serials</CommandItem>
 								<CommandItem onClick={() => {}}>Search for {searchValue}</CommandItem>
 							</CommandGroup>
