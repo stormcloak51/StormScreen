@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type { Item } from '../home/slice'
 import { VideoProps } from '../movies/slice'
 import * as types from './types'
-import { FiltersProps } from '@/components/filters'
+import { FiltersOptions } from '@/components/filters'
 
 const apiKey = `6bb72f3ee1890e4b000df402dbefb0e0`
 
@@ -15,19 +15,19 @@ export const api = createApi({
 
   tagTypes: ['Movie', 'List'],
   endpoints: (build) => ({
-		getMovies: build.query<types.MoviesProps, string>({
-			query: (value) => ({
+		getMovies: build.query<types.MoviesProps, types.SearchVideoArgs>({
+			query: (queryParams) => ({
 				url: `search/movie`,
 				params: {
-					query: value,
+					...queryParams,
 					api_key: apiKey,
 				}
 			}),
-			providesTags: (result) => {
-				return [{type: 'List', id: result?.results[0].id}]
+			providesTags: () => {
+				return [{type: 'List', id: 'SEARCH_MOVIES'}]
 			}
 		}),
-		getFilteredMovies: build.query<types.MoviesProps, FiltersProps>({
+		getFilteredMovies: build.query<types.MoviesProps, FiltersOptions>({
 			query: (queryParams) => ({
 				url: `discover/movie`,
 				params: {
@@ -64,6 +64,14 @@ export const api = createApi({
 				return [{ type: 'Movie', id }]
 			}
 		}),
+		getTrending: build.query<types.MoviesProps, void>({
+			query: () => ({
+				url: 'trending/movie/day',
+				params: {
+					api_key: apiKey
+				}
+			})
+		}),
 		getNowPlaying: build.query<types.MoviesProps, void>({
 			query: () => ({
 				url: `movie/now_playing`,
@@ -73,7 +81,7 @@ export const api = createApi({
 				}
 			}),
 			providesTags: (result) => {
-				return result?.results?.map((item) => ({ type: 'Movie', id: item.id })) || []
+				return result?.results ? result.results.map(({ id }) => ({ type: 'Movie', id })) : [];
 			}
 		}),
 		getPopular: build.query<types.MoviesProps, void>({
@@ -108,8 +116,17 @@ export const api = createApi({
 			providesTags: (result) => {
 				return result?.results?.map((item) => ({ type: 'Movie', id: item.id })) || []
 			}
+		}),
+		getGenres: build.query<types.IGenres, void>({
+			query: () => ({
+				url: 'genre/movie/list',
+				params: {
+					api_key: apiKey
+				}
+			}),
+			providesTags: () => [{ type: 'List', id: 'GENRES_LIST' }]
 		})
   }),
 })
 
-export const { useGetMovieQuery, useGetMovieVideoQuery, useGetMoviesQuery, useGetNowPlayingQuery, useGetMovieProvidersQuery, useGetPopularQuery, useGetTopRatedQuery, useGetUpcomingQuery, useGetFilteredMoviesQuery } = api
+export const { useGetMovieQuery, useGetMovieVideoQuery, useGetMoviesQuery, useGetNowPlayingQuery, useGetMovieProvidersQuery, useGetPopularQuery, useGetTopRatedQuery, useGetUpcomingQuery, useGetFilteredMoviesQuery, useGetTrendingQuery, useGetGenresQuery } = api

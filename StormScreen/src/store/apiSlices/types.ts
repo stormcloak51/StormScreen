@@ -5,6 +5,13 @@ export type VideoArgs = {
 	id: number,
 }
 
+export type SearchVideoArgs = {
+	
+	query: string
+	page: number
+	
+}
+
 export interface MoviesProps {
 	page: number,
 	results: Item[],
@@ -21,4 +28,11 @@ export type MovieProviders = {
 			}[],
 		}
 	}
+}
+
+export type IGenres = {
+	genres: {
+		id: number,
+		name: string
+	}[]
 }
