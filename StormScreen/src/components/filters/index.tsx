@@ -32,8 +32,8 @@ export interface FiltersOptions {
 	sort_by: string
 	include_adult: boolean
 	include_video: boolean
-	year: number
-	with_genres: string
+	with_genres: string,
+	page: number,
 }
 
 const Filters: FC = () => {
@@ -45,8 +45,8 @@ const Filters: FC = () => {
 		sort_by: 'popularity.desc',
 		include_adult: false,
 		include_video: false,
-		year: NaN,
 		with_genres: '',
+		page: 1
 	})
 
 	const {data: genresData, isSuccess} = useGetGenresQuery()

@@ -21,13 +21,13 @@ const MovieSearch: FC = () => {
 	const searchValue = urlParams.get('searchFor')
 	// console.log(qUrl)
 
-	const [page, setPage] = useState(1)
+	const [page, setPage] = useState(Number(urlParams.get('page')) || 1)
 
 	console.log(urlParams.get('searchFor'))
 
 	console.log(page)
 
-	const { data: searchData } = useGetMoviesQuery({query: searchValue ? searchValue : '', page: page})
+	const { data: searchData } = useGetMoviesQuery({query: searchValue ? searchValue : '', page: Number(urlParams.get('page')) || page})
 
 	const copiedResults = sortBy(searchData?.results, ['popularity']).reverse()
 
@@ -77,12 +77,12 @@ const MovieSearch: FC = () => {
 				<Pagination>
 					<PaginationContent>
 						<PaginationItem>
-							<PaginationPrevious to={`?searchFor=${urlParams.get('searchFor')}&page=${page != 1 ? page - 1 : page}`} onClick={() => {
+							<PaginationPrevious to={`?searchFor=${urlParams.get('searchFor')}&page=${(Number(urlParams.get('page')) != 1 ? Number(urlParams.get('page')) - 1 : Number(urlParams.get('page'))) || (page != 1 ? page - 1 : page)}`} onClick={() => {
 								if (page !== 1) setPage(page - 1)
 							}}/>
 						</PaginationItem>
 						<PaginationItem>
-							<PaginationLink to={`?searchFor=${urlParams.get('searchFor')}&page=${page}`}>{page}</PaginationLink>
+							<PaginationLink to={`?searchFor=${urlParams.get('searchFor')}&page=${urlParams.get('page') || page}`}>{urlParams.get('page') || page}</PaginationLink>
 						</PaginationItem>
 						<PaginationItem>
 							<PaginationEllipsis />
