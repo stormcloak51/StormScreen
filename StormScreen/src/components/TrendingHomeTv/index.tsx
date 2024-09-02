@@ -35,7 +35,7 @@ const TrendingHomeTv = () => {
 
 	return (
 		<>
-			<h1 className='mt-[25px] text-5xl font-inter font-bold trending-gradient mb-[10px] leading-tight'>
+			<h1 className='mt-[25px] text-5xl font-inter font-bold mb-[10px] leading-tight bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white'>
 				TV Serials
 			</h1>
 			<Carousel

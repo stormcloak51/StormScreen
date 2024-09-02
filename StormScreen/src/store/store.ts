@@ -3,9 +3,11 @@ import homeSlice from './home/slice'
 import movieSlice from './movies/slice'
 import { api } from './apiSlices/movies'
 import movies from './movies/search/slice'
+import user from './auth/userSlice'
 
 export const store = configureStore({
   reducer: {
+		user,
 		homeSlice,
 		movieSlice,
 		movies,

@@ -35,7 +35,7 @@ export default function TrendingHomeAll() {
 
 	return (
 		<>
-			<h1 className='mt-[25px] text-5xl font-inter font-bold trending-gradient mb-[10px] leading-tight'>
+			<h1 className='mt-[25px] text-5xl font-inter font-bold mb-[10px] leading-tight bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white'>
 				Trending
 			</h1>
 
@@ -53,21 +53,21 @@ export default function TrendingHomeAll() {
 								<CarouselItem
 									className='relative transition-all duration-300 basis-1/2'
 									key={obj.id}>
-									<div className='bg-background border rounded-xl bg-background shadow-lg mb-[50px]  mx-auto'>
+									<div className='bg-background border rounded-xl bg-background mb-[50px] mx-auto dark:border-slate-700'>
 										<img
 											className='rounded-xl justify-center items-center mx-auto transition-all duration-300 hover:backdrop-blur-sm w-full'
 											src={`https://image.tmdb.org/t/p/w1280${obj.backdrop_path}`}
 										/>
 										<div className='px-[25px] pb-[25px]'>
-											<div className='flex justify-between border-b py-[8px]'>
-												<div className='scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl'>
+											<div className='flex justify-between border-b py-[8px] dark:border-slate-600'>
+												<div className='scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl dark:text-white'>
 													{obj.title || obj.name}
 												</div>
 												<div className='scroll-m-20 text-3xl text-red-600 font-extrabold tracking-tight lg:text-3xl'>
 													Rating: {obj.vote_average.toFixed(1)}
 												</div>
 											</div>
-											<p className='leading-7 [&:not(:first-child)]:mt-3'>
+											<p className='leading-7 [&:not(:first-child)]:mt-3 dark:text-white '>
 												{changeFilmDescription(obj.overview)}
 											</p>
 											<Button asChild className='mt-4 w-full text-lg'><Link to={`/movies/${obj.id}`}>Watch</Link></Button>

@@ -16,13 +16,13 @@ export function App() {
 	// 	console.log(query.data)
 	// }
 	return (
-		<>
+		<div className='bg-white dark:bg-black'>
 			<ThemeProvider defaultTheme='light'>
 				<Header />
-				<div className='pl-[100px] pr-[24px]'>
+				<div className='pl-[100px] pr-[24px] dark:bg-black'>
 					<Outlet />
 				</div>
 			</ThemeProvider>
-		</>
+		</div>
 	)
 }

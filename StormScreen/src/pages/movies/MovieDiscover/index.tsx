@@ -43,7 +43,7 @@ const MovieDiscover = () => {
 	return (
 		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px]'>
 			<section>
-				<h1 className='mt-[25px] text-5xl font-inter font-bold trending-gradient mb-[10px] leading-tight'>
+				<h1 className='mt-[25px] text-5xl font-inter font-bold mb-[10px] leading-tight bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white'>
 					Filtered Results
 				</h1>
 				<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 auto-rows-auto'>

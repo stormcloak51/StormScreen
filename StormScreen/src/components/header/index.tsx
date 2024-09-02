@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input'
 
 import { searchAll } from '@/services/api'
-import { Clapperboard, Film, House, Settings, Slash } from 'lucide-react'
+import { Clapperboard, Film, House, Settings, Slash, SunMoon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
@@ -28,10 +28,16 @@ import {
 	CommandList,
 } from '../ui/command'
 import Filters from '../filters'
+import { Card } from '../ui/card'
+import { useTheme } from '../theme-provider'
+import useAuth from '@/hooks/use-auth'
+import { Button } from '../ui/button'
 
 //
 export default function Header() {
+	const { setTheme, theme } = useTheme()
 	// const isLoaded = useRef(false)
+	const { isAuth, displayName } = useAuth()
 	const [open, setOpen] = useState(false)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [searchValue, setSearchValue] = useState('')
@@ -71,36 +77,42 @@ export default function Header() {
 		navigate(`/movies/search/?searchFor=${searchValue}`)
 	}
 
-
 	return (
 		<>
-			<nav className='flex flex-col h-[100vh] bg-white w-[4vw] border-r fixed mt-0 items-center justify-between top-0 left-0 mr-[100px]'>
+			<nav className='flex flex-col h-[100vh] bg-white w-[60px] border-r fixed mt-0 items-center justify-between top-0 left-0 mr-[100px] dark:bg-black dark:border-slate-800'>
 				<div>
-					<div className='mt-5 p-[5px] border-[2px] transition-all rounded-lg'>
+					<Card className='mt-5 p-[5px] transition-all rounded-lg'>
 						<Link to='/home'>
-							<House color='#000000' className='transition-all scale-100 hover:scale-105' />
+							<House className='stroke-black dark:stroke-white scale-100 hover:scale-105' />
 						</Link>
-					</div>
-					<div className='mt-3 p-[5px] border-[2px] rounded-lg'>
+					</Card>
+					<Card className='mt-3 p-[5px] transition-all rounded-lg'>
 						<Link to={'/movies'}>
-							<Film color='#000000' className='transition-all scale-100 hover:scale-105' />
+							<Film className='stroke-black dark:stroke-white scale-100 hover:scale-105' />
 						</Link>
-					</div>
-					<div className='mt-3 p-[5px] border-[2px] rounded-lg' id='clapper'>
+					</Card>
+					<Card className='mt-3 p-[5px] transition-all rounded-lg' id='clapper'>
 						<Link to={'/serials'}>
-							<Clapperboard color='#000000' className='transition-all scale-100 hover:scale-105' />
+							<Clapperboard className='stroke-black dark:stroke-white scale-100 hover:scale-105' />
 						</Link>
-					</div>
+					</Card>
 				</div>
 
 				<div>
-					<div className='mb-5 p-[5px] border-[2px] rounded-lg'>
-						<Settings color='#000000' />
-					</div>
+					<Card
+						className='mb-5 p-[5px] transition-all rounded-lg'
+						onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+						<SunMoon className='stroke-black dark:stroke-white scale-100 hover:scale-105' />
+					</Card>
+					<Card className='mb-5 p-[5px] transition-all rounded-lg'>
+						<Link to={'/settings'}>
+							<Settings className='stroke-black dark:stroke-white scale-100 hover:scale-105' />
+						</Link>
+					</Card>
 				</div>
 			</nav>
-			<header className='inline w-[97vw] mr-[50px]'>
-				<section className='self-start flex items-center pl-[100px] pr-[24px] justify-between w-[100%] py-[15px]'>
+			<header className='inline w-[90%] mr-[50px]'>
+				<section className='self-start flex items-center pl-[100px] pr-[24px] justify-between w-[100%] py-[15px] dark:bg-black'>
 					<Breadcrumb className=''>
 						<BreadcrumbList>
 							{pathBreadcrumb ? (
@@ -110,7 +122,7 @@ export default function Header() {
 											<Fragment key={index}>
 												<BreadcrumbItem>
 													<BreadcrumbLink
-														className='text-2xl font-bold text-black'
+														className='text-2xl transition-all font-bold text-black dark:text-white dark:hover:text-slate-300'
 														href={`/${item}`}>
 														{item}
 													</BreadcrumbLink>
@@ -124,7 +136,7 @@ export default function Header() {
 									return (
 										<Fragment key={index}>
 											<BreadcrumbItem>
-												<BreadcrumbPage className='text-2xl font-bold text-black'>
+												<BreadcrumbPage className='text-2xl transition-all cursor-pointer font-bold text-black dark:text-white dark:hover:text-slate-300'>
 													{item}
 												</BreadcrumbPage>
 											</BreadcrumbItem>
@@ -142,12 +154,20 @@ export default function Header() {
 
 					<div className='profile flex ml-auto items-center justify-self-end'>
 						<Filters />
-						<Input className='ml-[30px]' placeholder='Search' onClick={() => setOpen(true)} />
-						<Avatar className='ml-[30px] mr-[10px]'>
-							<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
-							<AvatarFallback>G</AvatarFallback>
-						</Avatar>
-						<Badge className='h-[25px]'>stormcloak51</Badge>
+						<Input className='ml-[30px] mr-[25px]' placeholder='Search' onClick={() => setOpen(true)} />
+						{isAuth ? (
+							<>
+								<Avatar className='ml-[30px] mr-[10px]'>
+									<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
+									<AvatarFallback>{displayName?.[0].toUpperCase()}</AvatarFallback>
+								</Avatar>
+								<Badge className='h-[25px]'>{displayName}</Badge>
+							</>
+						) : (
+							<>
+								<Button asChild><Link to={'/auth'}>Log In</Link></Button>
+							</>
+						)}
 					</div>
 					<CommandDialog open={open} onOpenChange={setOpen}>
 						<CommandInput

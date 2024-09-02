@@ -159,3 +159,15 @@
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
+.trending-gradient-dark {
+	display: inline-block;
+	/* padding-top: 40px; */
+	background: #fff;
+	background: linear-gradient(to right, #fff 0%, #cf0000 50%);
+}
+
+.bg-clip-text {
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

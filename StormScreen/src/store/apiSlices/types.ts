@@ -6,10 +6,8 @@ export type VideoArgs = {
 }
 
 export type SearchVideoArgs = {
-	
 	query: string
 	page: number
-	
 }
 
 export interface MoviesProps {

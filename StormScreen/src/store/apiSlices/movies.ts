@@ -11,9 +11,14 @@ export const api = createApi({
 	reducerPath: 'apiMovie',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.themoviedb.org/3/',
+		prepareHeaders: (headers) => {
+			headers.set('Authorization', `Bearer ${apiKey}`)
+			return headers
+		},
   }),
 
   tagTypes: ['Movie', 'List'],
+	
   endpoints: (build) => ({
 		getMovies: build.query<types.MoviesProps, types.SearchVideoArgs>({
 			query: (queryParams) => ({
@@ -46,6 +51,18 @@ export const api = createApi({
 				return [{ type: 'Movie', id }] 
 			}
     }),
+		getRecommendations: build.query<types.MoviesProps, types.SearchVideoArgs>({
+			query: (queryParams) => ({
+				url: `movie/${queryParams.query}/recommendations`,
+				params: {
+					page: queryParams?.page,
+					api_key: apiKey
+				}
+			}),
+			providesTags: (_, __, res) => {
+				return [{ type: 'List', id: `RECOMMENDATIONS_${res.query}`}]
+			}
+		}),
 		getMovieVideo: build.query<VideoProps, types.VideoArgs>({
 			query: ({id}) => ({
 				url: `movie/${id}/videos`,
@@ -129,4 +146,4 @@ export const api = createApi({
   }),
 })
 
-export const { useGetMovieQuery, useGetMovieVideoQuery, useGetMoviesQuery, useGetNowPlayingQuery, useGetMovieProvidersQuery, useGetPopularQuery, useGetTopRatedQuery, useGetUpcomingQuery, useGetFilteredMoviesQuery, useGetTrendingQuery, useGetGenresQuery } = api
+export const { useGetMovieQuery, useGetMovieVideoQuery, useGetMoviesQuery, useGetNowPlayingQuery, useGetMovieProvidersQuery, useGetPopularQuery, useGetTopRatedQuery, useGetUpcomingQuery, useGetFilteredMoviesQuery, useGetTrendingQuery, useGetGenresQuery, useGetRecommendationsQuery } = api

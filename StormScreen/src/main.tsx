@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import MoviePage from './pages/movies/MoviePage/index.tsx'
 import MovieSearch from './pages/movies/MovieSearch/index.tsx'
 import MovieDiscover from './pages/movies/MovieDiscover/index.tsx'
+import Auth from './components/auth/index.tsx'
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
         path: "serials",
         element: <Serials />,
       },
+      {
+        path: 'auth',
+        element: <Auth />
+      }
     ],
   },
 ]);
