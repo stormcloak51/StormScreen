@@ -14,6 +14,7 @@ import MoviePage from './pages/movies/MoviePage/index.tsx'
 import MovieSearch from './pages/movies/MovieSearch/index.tsx'
 import MovieDiscover from './pages/movies/MovieDiscover/index.tsx'
 import Auth from './components/auth/index.tsx'
+import Settings from './pages/settings/index.tsx'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: 'auth',
         element: <Auth />
+      },      
+      {
+        path: 'settings',
+        element: <Settings />
       }
     ],
   },

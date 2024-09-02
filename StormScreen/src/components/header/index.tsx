@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/breadcrumb'
 
 import { Input } from '@/components/ui/input'
-
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { searchAll } from '@/services/api'
 import { Clapperboard, Film, House, Settings, Slash, SunMoon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -32,19 +32,29 @@ import { Card } from '../ui/card'
 import { useTheme } from '../theme-provider'
 import useAuth from '@/hooks/use-auth'
 import { Button } from '../ui/button'
+import { Skeleton } from '../ui/skeleton'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/store/auth/userSlice'
 
 //
 export default function Header() {
 	const { setTheme, theme } = useTheme()
-	// const isLoaded = useRef(false)
-	const { isAuth, displayName } = useAuth()
-	const [open, setOpen] = useState(false)
+
+	const isLoaded = useRef(false)
 	const inputRef = useRef<HTMLInputElement>(null)
+
+	const [isPathReady, setIsPathReady] = useState(false)
+	const [isAccReady, setIsAccReady] = useState(false)
+	const [userInfo, setUserInfo] = useState({ email: '', displayName: '' })
+	const [open, setOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
+	const [pathBreadcrumb, setPathBreadcrumb] = useState<string[] | null>([])
+
 	const params = useParams()
 	const location = useLocation()
 	const navigate = useNavigate()
-	const [pathBreadcrumb, setPathBreadcrumb] = useState<string[] | null>([])
+	const dispatch = useDispatch()
+
 	useEffect(() => {
 		setPathBreadcrumb(null)
 		const path = location.pathname.split('/').filter((item: string) => item !== '')
@@ -55,7 +65,7 @@ export default function Header() {
 					const name = res.title
 					path.push(name)
 					setPathBreadcrumb(path)
-					// isLoaded.current = true
+					setIsPathReady(true)
 				})
 				.catch(err => {
 					console.log(err)
@@ -67,6 +77,35 @@ export default function Header() {
 			setPathBreadcrumb(path)
 		}
 	}, [location.pathname])
+
+	useEffect(() => {
+		const auth = getAuth()
+		onAuthStateChanged(auth, user => {
+			if (user) {
+				// User is signed in, see docs for a list of available properties
+				// https://firebase.google.com/docs/reference/js/auth.user
+				const email = user.email,
+					displayName = user.displayName,
+					token = user.refreshToken,
+					id = user.uid
+				dispatch(setUser({ email, token, displayName, id }))
+
+				setUserInfo({ displayName: displayName ? displayName : '', email: email ? email : '' })
+				setIsAccReady(true)
+				const uid = user.uid
+				// ...
+			} else {
+				// User is signed out
+				// ...
+			}
+		})
+	}, [])
+
+	useEffect(() => {
+		if (isAccReady && isPathReady) {
+			isLoaded.current = true
+		}
+	}, [isAccReady, isPathReady])
 
 	const handleSearch = () => {
 		setSearchValue(inputRef.current?.value || '')
@@ -115,7 +154,7 @@ export default function Header() {
 				<section className='self-start flex items-center pl-[100px] pr-[24px] justify-between w-[100%] py-[15px] dark:bg-black'>
 					<Breadcrumb className=''>
 						<BreadcrumbList>
-							{pathBreadcrumb ? (
+							{pathBreadcrumb && isLoaded ? (
 								pathBreadcrumb.map((item, index) => {
 									if (index !== pathBreadcrumb.length - 1) {
 										return (
@@ -154,18 +193,25 @@ export default function Header() {
 
 					<div className='profile flex ml-auto items-center justify-self-end'>
 						<Filters />
-						<Input className='ml-[30px] mr-[25px]' placeholder='Search' onClick={() => setOpen(true)} />
-						{isAuth ? (
+						<Input
+							className='ml-[30px] mr-[25px]'
+							placeholder='Search'
+							onClick={() => setOpen(true)}
+						/>
+						{userInfo?.email && isLoaded ? (
 							<>
 								<Avatar className='ml-[30px] mr-[10px]'>
 									<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
-									<AvatarFallback>{displayName?.[0].toUpperCase()}</AvatarFallback>
+									<AvatarFallback>{userInfo?.displayName?.[0].toUpperCase()}</AvatarFallback>
 								</Avatar>
-								<Badge className='h-[25px]'>{displayName}</Badge>
+								<Badge className='h-[25px]'>{userInfo?.displayName}</Badge>
 							</>
 						) : (
 							<>
-								<Button asChild><Link to={'/auth'}>Log In</Link></Button>
+								<div className='flex items-center ml-[30px]'>
+									<Skeleton className='h-10 w-10 rounded-full mr-[10px]' />
+									<Skeleton className='h-6 w-[90px] rounded-xl' />
+								</div>
 							</>
 						)}
 					</div>
