@@ -14,9 +14,9 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
 
-type LoginProps = {
-	form: UseFormReturn<{ email: string; password: string }, any, undefined>
-	onSubmit: (values: { email: string; password: string }) => void
+interface LoginProps {
+  form: UseFormReturn<{ email: string; password: string; displayName?: string | undefined; }, any, undefined>;
+  onSubmit: (values: { email: string; password: string; displayName?: string | undefined; }) => void;
 }
 
 const Login: FC<LoginProps> = ({ form, onSubmit }) => {

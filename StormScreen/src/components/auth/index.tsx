@@ -9,18 +9,13 @@ import SignUp from './SignUp'
 
 const formSchema = z.object({
 	email: z.string().min(2).max(50),
-	displayName: z.string().min(2).max(50),
+	displayName: z.string().min(2).max(50).optional(),
 	password: z.string().min(2).max(50),
 })
 
 const Auth = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			email: '',
-			displayName: '',
-			password: '',
-		},
 	})
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		// Do something with the form values.
@@ -29,7 +24,7 @@ const Auth = () => {
 	}
 
 	return (
-		<Tabs defaultValue='account' className='w-[400px] min-h-[100%] mx-auto mt-[120px]'>
+		<Tabs defaultValue='login' className='w-[400px] min-h-[100%] mx-auto mt-[120px]'>
 			<TabsList>
 				<TabsTrigger value='login'>Log In</TabsTrigger>
 				<TabsTrigger value='signup'>Sign Up</TabsTrigger>

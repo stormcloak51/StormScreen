@@ -9,20 +9,18 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
 
 type SignUpProps = {
-	form: UseFormReturn<{ email: string; password: string, displayName: string }, any, undefined>
+	form: UseFormReturn<{ email: string; password: string, displayName?: string | undefined }, any, undefined>
 	onSubmit: (values: { email: string; password: string, displayName: string }) => void
 }
 
 const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
 	const dispatch = useDispatch()
 	const handleSignUp = async () => {
-		const { email, password } = form.getValues()
-		createUserWithEmailAndPassword(auth, email, password)
+		const { displayName, email, password } = form.getValues()
 		try {
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password)
 			const user = userCredential.user
-			await updateProfile(user, { displayName: form.getValues().displayName })
-			console.log(user)
+			await updateProfile(user, { displayName })
 			dispatch(setUser({
 				email: user.email,
 				token: user.refreshToken,

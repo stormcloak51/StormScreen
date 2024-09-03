@@ -10,7 +10,6 @@ import {
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -18,22 +17,56 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { useToast } from '@/components/ui/use-toast'
 import useAuth from '@/hooks/use-auth'
 import { setUser } from '@/store/auth/userSlice'
 import { RootState } from '@/store/store'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { Separator } from '@/components/ui/separator'
+import { getAuth, onAuthStateChanged, updateProfile, User } from 'firebase/auth'
+import { useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { Copy } from 'lucide-react'
 
 const Settings: React.FC = () => {
-	const { email, displayName } = useSelector(
-		(state: RootState) => state.user,
-	)
-	
+	const { toast } = useToast()
+	const displayNameRef = useRef<HTMLInputElement>(null)
+
+	const { email, displayName } = useSelector((state: RootState) => state.user)
+
+	const handleUpdate = async () => {
+		const auth = getAuth()
+		const user = auth.currentUser
+		if (displayNameRef.current?.value) {
+			await updateProfile(user!, {
+				displayName: displayNameRef.current.value,
+			})
+			toast({
+				title: 'Success',
+				description: 'Your display name has been updated.',
+			})
+		}
+	}
+
+	const handleCopy = async () => {
+		try {
+			console.log(document.querySelector('details-email')!.textContent!)
+			await navigator.clipboard.writeText(document.querySelector('details-email')!.textContent!)
+			toast({
+				title: 'Success',
+				description: 'Email copied to clipboard.',
+			})
+		} catch (err) {
+			toast({
+				title: 'Error',
+				description: 'Failed to copy email to clipboard.',
+			})
+		}
+	}
+
 	return (
 		<Tabs defaultValue='account'>
-			<TabsList className='grid w-[400px] grid-cols-2'>
+			<TabsList className='grid w-[400px] grid-cols-1'>
 				<TabsTrigger value='account'>Account</TabsTrigger>
-				<TabsTrigger value='password'>Password</TabsTrigger>
 			</TabsList>
 			<TabsContent value='account'>
 				<Card>
@@ -46,17 +79,46 @@ const Settings: React.FC = () => {
 					<CardContent className='space-y-2 w-full grid grid-cols-2 grid-rows-2'>
 						<div className='space-y-1 w-auto'>
 							<Label htmlFor='name'>Change Display Name</Label>
-							<Input id='name' className='w-[200px]' defaultValue={displayName ? displayName : ''} />
+							<Input
+								ref={displayNameRef}
+								id='name'
+								className='w-[200px]'
+								defaultValue={displayName ? displayName : ''}
+							/>
 						</div>
 						<div className='space-y-1 w-auto ml-auto'>
 							<Dialog>
 								<DialogTrigger asChild>
-									<Button>View Account Details</Button></DialogTrigger>
+									<Button>View Account Details</Button>
+								</DialogTrigger>
 								<DialogContent>
 									<DialogHeader className='gap-2'>
 										<DialogTitle>Account Details</DialogTitle>
-										<Label htmlFor='details-email' className='pt-[30px] !text-[#999]'>E-Mail</Label>
-										<Input disabled id='details-email' className='w-[200px]' defaultValue={email ? email : ''} />
+										<Label htmlFor='details-email' className='pt-[10px] '>
+											E-Mail
+										</Label>
+										<div className='flex justify-between relative'>
+											<Input
+												disabled
+												id='details-email'
+												className='w-full'
+												defaultValue={email ? email : ''}
+											/>
+											<Card
+												onClick={() => handleCopy()}
+												className='absolute right-0 p-1 self-center mr-1 border-black transition-all rounded-lg'>
+												<Copy className='stroke-black dark:stroke-white scale-95 transition-all hover:scale-105 cursor-pointer' />
+											</Card>
+										</div>
+
+										<Separator className='w-full my-[7px]' />
+										<Label htmlFor='details-favorites'>Total Favorites</Label>
+										<Input
+											disabled
+											id='details-favorites'
+											className='w-[200px]'
+											defaultValue={15}
+										/>
 									</DialogHeader>
 								</DialogContent>
 							</Dialog>
@@ -67,30 +129,7 @@ const Settings: React.FC = () => {
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Button>Save changes</Button>
-					</CardFooter>
-				</Card>
-			</TabsContent>
-			<TabsContent value='password'>
-				<Card>
-					<CardHeader>
-						<CardTitle>Password</CardTitle>
-						<CardDescription>
-							Change your password here. After saving, you'll be logged out.
-						</CardDescription>
-					</CardHeader>
-					<CardContent className='space-y-2'>
-						<div className='space-y-1'>
-							<Label htmlFor='current'>Current password</Label>
-							<Input id='current' type='password' />
-						</div>
-						<div className='space-y-1'>
-							<Label htmlFor='new'>New password</Label>
-							<Input id='new' type='password' />
-						</div>
-					</CardContent>
-					<CardFooter>
-						<Button>Save password</Button>
+						<Button onClick={handleUpdate}>Save changes</Button>
 					</CardFooter>
 				</Card>
 			</TabsContent>

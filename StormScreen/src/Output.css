@@ -920,9 +920,24 @@ video {
   margin-right: auto;
 }
 
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .my-1 {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+}
+
+.my-\[15px\] {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.my-\[7px\] {
+  margin-top: 7px;
+  margin-bottom: 7px;
 }
 
 .\!ml-0 {
@@ -1061,12 +1076,16 @@ video {
   margin-top: 50px;
 }
 
-.mr-\[\] {
-  margin-right: ;
+.mt-\[\] {
+  margin-top: ;
 }
 
-.\!mt-8 {
-  margin-top: 2rem !important;
+.mt-\[15px\] {
+  margin-top: 15px;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
 }
 
 .block {
@@ -1165,10 +1184,6 @@ video {
   height: 1px;
 }
 
-.h-12 {
-  height: 3rem;
-}
-
 .max-h-96 {
   max-height: 24rem;
 }
@@ -1183,6 +1198,34 @@ video {
 
 .min-h-\[100\%\] {
   min-height: 100%;
+}
+
+.min-h-\[100vh\] {
+  min-height: 100vh;
+}
+
+.min-h-\[900vh\] {
+  min-height: 900vh;
+}
+
+.min-h-\[90vh\] {
+  min-height: 90vh;
+}
+
+.min-h-\[80vh\] {
+  min-height: 80vh;
+}
+
+.min-h-\[70vh\] {
+  min-height: 70vh;
+}
+
+.min-h-\[75vh\] {
+  min-height: 75vh;
+}
+
+.min-h-\[76vh\] {
+  min-height: 76vh;
 }
 
 .w-10 {
@@ -1269,44 +1312,16 @@ video {
   width: 90%;
 }
 
-.w-full {
-  width: 100%;
-}
-
-.w-12 {
-  width: 3rem;
-}
-
-.w-\[250px\] {
-  width: 250px;
-}
-
-.w-\[0px\] {
-  width: 0px;
-}
-
-.w-\[100px\] {
-  width: 100px;
-}
-
-.w-\[80px\] {
-  width: 80px;
-}
-
 .w-\[90px\] {
   width: 90px;
 }
 
-.w-\[40\%\] {
-  width: 40%;
-}
-
-.w-\[30\%\] {
-  width: 30%;
-}
-
 .w-auto {
   width: auto;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .min-w-0 {
@@ -1403,6 +1418,12 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.scale-95 {
+  --tw-scale-x: .95;
+  --tw-scale-y: .95;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 @keyframes pulse {
   50% {
     opacity: .5;
@@ -1441,6 +1462,10 @@ video {
 
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .grid-rows-2 {
@@ -1540,26 +1565,12 @@ video {
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 
-.space-x-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
-.space-y-5 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
-}
-
-.\!space-y-\[5400px\] > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0 !important;
-  margin-top: calc(5400px * calc(1 - var(--tw-space-y-reverse))) !important;
-  margin-bottom: calc(5400px * var(--tw-space-y-reverse)) !important;
-}
-
 .self-start {
   align-self: flex-start;
+}
+
+.self-center {
+  align-self: center;
 }
 
 .justify-self-end {
@@ -1656,6 +1667,11 @@ video {
 
 .border-transparent {
   border-color: transparent;
+}
+
+.border-black {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .bg-black {
@@ -1768,6 +1784,14 @@ video {
   padding: 5px;
 }
 
+.p-5 {
+  padding: 1.25rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1801,6 +1825,11 @@ video {
 .px-\[30px\] {
   padding-left: 30px;
   padding-right: 30px;
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .py-0\.5 {
@@ -1914,6 +1943,14 @@ video {
   padding-top: 1rem;
 }
 
+.pt-\[30px\] {
+  padding-top: 30px;
+}
+
+.pt-\[10px\] {
+  padding-top: 10px;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1999,6 +2036,11 @@ video {
 
 .tracking-widest {
   letter-spacing: 0.1em;
+}
+
+.\!text-\[\#999\] {
+  --tw-text-opacity: 1 !important;
+  color: rgb(153 153 153 / var(--tw-text-opacity)) !important;
 }
 
 .text-black {
@@ -2215,6 +2257,12 @@ video {
 .bg-clip-text {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .file\:border-0::file-selector-button {

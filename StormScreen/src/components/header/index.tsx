@@ -12,9 +12,13 @@ import {
 } from '@/components/ui/breadcrumb'
 
 import { Input } from '@/components/ui/input'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import {
+	getAuth,
+	onAuthStateChanged,
+	signOut,
+} from 'firebase/auth'
 import { searchAll } from '@/services/api'
-import { Clapperboard, Film, House, Settings, Slash, SunMoon } from 'lucide-react'
+import { Clapperboard, DoorOpen, Film, House, Settings, Slash, SunMoon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
@@ -33,18 +37,20 @@ import { useTheme } from '../theme-provider'
 import useAuth from '@/hooks/use-auth'
 import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
+import { RootState } from '@/store/store'
 
 //
 export default function Header() {
 	const { setTheme, theme } = useTheme()
 
 	const isLoaded = useRef(false)
-	const inputRef = useRef<HTMLInputElement>(null)
+	const searchInput = useRef<HTMLInputElement>(null)
 
-	const [isPathReady, setIsPathReady] = useState(false)
-	const [isAccReady, setIsAccReady] = useState(false)
+	const { isAuth } = useAuth()
+	const isPathReady = useRef(false)
+	const isAccReady = useRef(false)
 	const [userInfo, setUserInfo] = useState({ email: '', displayName: '' })
 	const [open, setOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
@@ -54,6 +60,8 @@ export default function Header() {
 	const location = useLocation()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+
+	const {email, displayName} = useSelector((state: RootState) => state.user)
 
 	useEffect(() => {
 		setPathBreadcrumb(null)
@@ -65,7 +73,7 @@ export default function Header() {
 					const name = res.title
 					path.push(name)
 					setPathBreadcrumb(path)
-					setIsPathReady(true)
+					isPathReady.current = true
 				})
 				.catch(err => {
 					console.log(err)
@@ -86,12 +94,12 @@ export default function Header() {
 				// https://firebase.google.com/docs/reference/js/auth.user
 				const email = user.email,
 					displayName = user.displayName,
-					token = user.refreshToken,
+					// token = user.refreshToken,
 					id = user.uid
-				dispatch(setUser({ email, token, displayName, id }))
-
-				setUserInfo({ displayName: displayName ? displayName : '', email: email ? email : '' })
-				setIsAccReady(true)
+				dispatch(setUser({ email, displayName, id }))
+				console.log(email)
+				setUserInfo({ displayName: displayName ? displayName : '', email: email as string })
+				isAccReady.current = true
 				const uid = user.uid
 				// ...
 			} else {
@@ -99,16 +107,16 @@ export default function Header() {
 				// ...
 			}
 		})
-	}, [])
-
+	}, [pathBreadcrumb])
+	console.log(isAccReady)
 	useEffect(() => {
-		if (isAccReady && isPathReady) {
+		if (isAccReady.current && isPathReady.current) {
 			isLoaded.current = true
 		}
 	}, [isAccReady, isPathReady])
 
 	const handleSearch = () => {
-		setSearchValue(inputRef.current?.value || '')
+		setSearchValue(searchInput.current?.value || '')
 	}
 
 	const searchMovies = () => {
@@ -116,6 +124,17 @@ export default function Header() {
 		navigate(`/movies/search/?searchFor=${searchValue}`)
 	}
 
+	const logOut = () => {
+		const auth = getAuth()
+		signOut(auth)
+			.then(() => {
+				console.log('success!')
+			})
+			.catch(err => {
+				console.log('error when logging out', err)
+			})
+	}
+	console.log(email)
 	return (
 		<>
 			<nav className='flex flex-col h-[100vh] bg-white w-[60px] border-r fixed mt-0 items-center justify-between top-0 left-0 mr-[100px] dark:bg-black dark:border-slate-800'>
@@ -138,10 +157,18 @@ export default function Header() {
 				</div>
 
 				<div>
+					{isAuth && (
+						<Card className='mb-5 p-[5px] transition-all rounded-lg'>
+							<DoorOpen
+								onClick={() => logOut()}
+								className='stroke-black dark:stroke-white scale-100 hover:scale-105 cursor-pointer'
+							/>
+						</Card>
+					)}
 					<Card
 						className='mb-5 p-[5px] transition-all rounded-lg'
 						onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-						<SunMoon className='stroke-black dark:stroke-white scale-100 hover:scale-105' />
+						<SunMoon className='stroke-black dark:stroke-white scale-100 hover:scale-105 cursor-pointer' />
 					</Card>
 					<Card className='mb-5 p-[5px] transition-all rounded-lg'>
 						<Link to={'/settings'}>
@@ -198,26 +225,32 @@ export default function Header() {
 							placeholder='Search'
 							onClick={() => setOpen(true)}
 						/>
-						{userInfo?.email && isLoaded ? (
+						{email! && (
 							<>
 								<Avatar className='ml-[30px] mr-[10px]'>
 									<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
-									<AvatarFallback>{userInfo?.displayName?.[0].toUpperCase()}</AvatarFallback>
+									<AvatarFallback>{displayName != '' && displayName ? displayName[0] : email?.[0]}</AvatarFallback>
 								</Avatar>
-								<Badge className='h-[25px]'>{userInfo?.displayName}</Badge>
+								<Badge className='h-[25px]'>{displayName != '' && displayName ? displayName : email}</Badge>
 							</>
-						) : (
-							<>
-								<div className='flex items-center ml-[30px]'>
-									<Skeleton className='h-10 w-10 rounded-full mr-[10px]' />
-									<Skeleton className='h-6 w-[90px] rounded-xl' />
-								</div>
-							</>
-						)}
+						)
+						// ) : !isAccReady.current ? (
+						// 	<>
+						// 		<div className='flex items-center ml-[30px]'>
+						// 			<Skeleton className='h-10 w-10 rounded-full mr-[10px]' />
+						// 			<Skeleton className='h-6 w-[90px] rounded-xl' />
+						// 		</div>
+						// 	</>
+						// ) : !isAuth && !isAccReady.current ? null : !isAuth && (
+						// 	<Button asChild>
+						// 		<Link to={'/auth'}>Log In</Link>
+						// 	</Button>
+						// )}
+					}
 					</div>
 					<CommandDialog open={open} onOpenChange={setOpen}>
 						<CommandInput
-							ref={inputRef}
+							ref={searchInput}
 							placeholder='Type a command or search...'
 							onValueChange={handleSearch}
 							value={searchValue}
