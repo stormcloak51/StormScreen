@@ -15,6 +15,7 @@ import MovieSearch from './pages/movies/MovieSearch/index.tsx'
 import MovieDiscover from './pages/movies/MovieDiscover/index.tsx'
 import Auth from './components/auth/index.tsx'
 import Settings from './pages/settings/index.tsx'
+import { Toaster } from './components/ui/toaster.tsx'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={Client}>
       <Provider store={store}>
+        <Toaster />
         <RouterProvider router={router} />
       </Provider>
     </QueryClientProvider>

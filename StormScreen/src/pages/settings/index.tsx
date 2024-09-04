@@ -25,7 +25,7 @@ import { Separator } from '@/components/ui/separator'
 import { getAuth, onAuthStateChanged, updateProfile, User } from 'firebase/auth'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Copy } from 'lucide-react'
+import { Copy, MailCheck } from 'lucide-react'
 
 const Settings: React.FC = () => {
 	const { toast } = useToast()
@@ -49,10 +49,17 @@ const Settings: React.FC = () => {
 
 	const handleCopy = async () => {
 		try {
-			console.log(document.querySelector('details-email')!.textContent!)
-			await navigator.clipboard.writeText(document.querySelector('details-email')!.textContent!)
+			// console.log(document.querySelector('#details-email')?.getAttribute('value'))
+			await navigator.clipboard.writeText(
+				document.querySelector('#details-email')?.getAttribute('value') as string,
+			)
 			toast({
-				title: 'Success',
+				title: (
+					<div style={{ display: 'flex', alignItems: 'center' }}>
+						<MailCheck style={{ marginRight: '8px' }} />
+						<span>Success</span>
+					</div>
+				),
 				description: 'Email copied to clipboard.',
 			})
 		} catch (err) {
@@ -60,6 +67,7 @@ const Settings: React.FC = () => {
 				title: 'Error',
 				description: 'Failed to copy email to clipboard.',
 			})
+			console.log(err)
 		}
 	}
 
