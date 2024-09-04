@@ -12,15 +12,11 @@ import {
 } from '@/components/ui/breadcrumb'
 
 import { Input } from '@/components/ui/input'
-import {
-	getAuth,
-	onAuthStateChanged,
-	signOut,
-} from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { searchAll } from '@/services/api'
 import { Clapperboard, DoorOpen, Film, House, Settings, Slash, SunMoon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, redirect, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 import SkeletonBreadcrumb from './SkeletonBreadcrumb'
 import {
@@ -40,8 +36,10 @@ import { Skeleton } from '../ui/skeleton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
 import { RootState } from '@/store/store'
+import RenderAvatar from './RenderAvatar'
 
-//
+
+
 export default function Header() {
 	const { setTheme, theme } = useTheme()
 
@@ -61,7 +59,7 @@ export default function Header() {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	const {email, displayName} = useSelector((state: RootState) => state.user)
+	const { email, displayName } = useSelector((state: RootState) => state.user)
 
 	useEffect(() => {
 		setPathBreadcrumb(null)
@@ -100,6 +98,7 @@ export default function Header() {
 				console.log(email)
 				setUserInfo({ displayName: displayName ? displayName : '', email: email as string })
 				isAccReady.current = true
+				localStorage.setItem('isAuth', 'true')
 				const uid = user.uid
 				// ...
 			} else {
@@ -107,8 +106,7 @@ export default function Header() {
 				// ...
 			}
 		})
-	}, [pathBreadcrumb])
-	console.log(isAccReady)
+	}, [isAuth])
 	useEffect(() => {
 		if (isAccReady.current && isPathReady.current) {
 			isLoaded.current = true
@@ -128,13 +126,13 @@ export default function Header() {
 		const auth = getAuth()
 		signOut(auth)
 			.then(() => {
+				localStorage.setItem('isAuth', 'false')
 				console.log('success!')
 			})
 			.catch(err => {
 				console.log('error when logging out', err)
 			})
 	}
-	console.log(email)
 	return (
 		<>
 			<nav className='flex flex-col h-[100vh] bg-white w-[60px] border-r fixed mt-0 items-center justify-between top-0 left-0 mr-[100px] dark:bg-black dark:border-slate-800'>
@@ -158,11 +156,18 @@ export default function Header() {
 
 				<div>
 					{isAuth && (
-						<Card className='mb-5 p-[5px] transition-all rounded-lg'>
+						<Card
+						onClick={() => {
+									
+							logOut()
+							
+						}}
+						className='mb-5 p-[5px] transition-all rounded-lg'>
+							<Link to={'/home'}>
 							<DoorOpen
-								onClick={() => logOut()}
 								className='stroke-black dark:stroke-white scale-100 hover:scale-105 cursor-pointer'
 							/>
+							</Link>
 						</Card>
 					)}
 					<Card
@@ -225,28 +230,7 @@ export default function Header() {
 							placeholder='Search'
 							onClick={() => setOpen(true)}
 						/>
-						{email! && (
-							<>
-								<Avatar className='ml-[30px] mr-[10px]'>
-									<AvatarImage src='https://i.pinimg.com/564x/b4/22/22/b42222172d89ea80e21cae84094e4382.jpg' />
-									<AvatarFallback>{displayName != '' && displayName ? displayName[0] : email?.[0]}</AvatarFallback>
-								</Avatar>
-								<Badge className='h-[25px]'>{displayName != '' && displayName ? displayName : email}</Badge>
-							</>
-						)
-						// ) : !isAccReady.current ? (
-						// 	<>
-						// 		<div className='flex items-center ml-[30px]'>
-						// 			<Skeleton className='h-10 w-10 rounded-full mr-[10px]' />
-						// 			<Skeleton className='h-6 w-[90px] rounded-xl' />
-						// 		</div>
-						// 	</>
-						// ) : !isAuth && !isAccReady.current ? null : !isAuth && (
-						// 	<Button asChild>
-						// 		<Link to={'/auth'}>Log In</Link>
-						// 	</Button>
-						// )}
-					}
+						<RenderAvatar  displayName={displayName!} email={email!}/>
 					</div>
 					<CommandDialog open={open} onOpenChange={setOpen}>
 						<CommandInput

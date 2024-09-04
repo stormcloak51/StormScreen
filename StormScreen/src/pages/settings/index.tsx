@@ -30,8 +30,10 @@ import { Copy, MailCheck } from 'lucide-react'
 const Settings: React.FC = () => {
 	const { toast } = useToast()
 	const displayNameRef = useRef<HTMLInputElement>(null)
-
+	const {isAuth} = useAuth()
 	const { email, displayName } = useSelector((state: RootState) => state.user)
+
+	console.log(!!email, isAuth, 'watchi this lineyy')
 
 	const handleUpdate = async () => {
 		const auth = getAuth()
@@ -58,7 +60,7 @@ const Settings: React.FC = () => {
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						<MailCheck style={{ marginRight: '8px' }} />
 						<span>Success</span>
-					</div>
+					</div> 
 				),
 				description: 'Email copied to clipboard.',
 			})
