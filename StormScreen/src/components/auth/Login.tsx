@@ -52,7 +52,7 @@ const Login: FC<LoginProps> = ({ form, onSubmit }) => {
 					name='email'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>E-Mail</FormLabel>
+							<FormLabel className='dark:text-white'>E-Mail</FormLabel>
 							<FormControl>
 								<Input type='email' placeholder='stormcloak@stormscreen.com' {...field} />
 							</FormControl>
@@ -65,7 +65,7 @@ const Login: FC<LoginProps> = ({ form, onSubmit }) => {
 					name='password'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Password</FormLabel>
+							<FormLabel className='dark:text-white'>Password</FormLabel>
 							<FormControl>
 								<Input type='password' placeholder='password' {...field} />
 							</FormControl>

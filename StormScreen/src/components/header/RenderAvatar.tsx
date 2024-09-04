@@ -6,26 +6,14 @@ import { Link } from 'react-router-dom'
 import { Button } from '../ui/button'
 
 interface IAvatar {
+	isAuth: boolean
 	email: string
 	displayName: string
 }
 
-const RenderAvatar: FC<IAvatar> = ({ email, displayName }) => {
-	const [isAuth, setIsAuth] = useState<boolean>(localStorage.getItem('isAuth') == 'true' ? true : false)
+const RenderAvatar: FC<IAvatar> = ({isAuth, email, displayName }) => {
+	// const [isAuth, setIsAuth] = useState<boolean>(localStorage.getItem('isAuth') == 'true' ? true : false)
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const newAuth = localStorage.getItem('isAuth') == 'true' ? true : false
-			
-			if (newAuth != isAuth) {
-				setIsAuth(newAuth)
-			}
-		}, 1000)
-
-		return () => {
-			clearInterval(interval)
-		}
-	}, [isAuth])
 	if (isAuth && email) {
 		console.log(displayName, 'ssssse')
 		return (

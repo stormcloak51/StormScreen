@@ -16,7 +16,7 @@ export function App() {
 	// 	console.log(query.data)
 	// }
 	return (
-		<div className='bg-white dark:bg-black'>
+		<div id='background' className='bg-white dark:bg-black'>
 			<ThemeProvider defaultTheme='light'>
 				<Header />
 				<div className='pl-[100px] pr-[24px] dark:bg-black min-h-[76vh] py-0 my-0'>

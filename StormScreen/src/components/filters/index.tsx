@@ -90,7 +90,7 @@ const Filters: FC = () => {
 				<SheetFooter className='block mt-[10px]'>
 					<SheetTitle className='text-left mb-1 text-xl'>Sort by</SheetTitle>
 					<Select value={filterValue.sort_by} onValueChange={handleChangeSort}>
-						<SelectTrigger className='w-full !ml-0 text-lg font-medium'>
+						<SelectTrigger className='w-full !ml-0 text-lg font-medium dark:text-slate-50'>
 							<SelectValue placeholder='Select an option' />
 						</SelectTrigger>
 						<SelectContent>
@@ -112,7 +112,7 @@ const Filters: FC = () => {
 					<Separator className='!ml-0 mt-[20px]' />
 					<SheetTitle className='text-left mb-1 text-xl mt-[10px]'>Another filters</SheetTitle>
 					<Select value={genre} onValueChange={handleChangeGenre}>
-						<SelectTrigger className='mt-[20px] w-full !ml-0 text-lg font-medium'>
+						<SelectTrigger className='mt-[20px] w-full !ml-0 text-lg font-medium dark:text-slate-50'>
 							<SelectValue placeholder='Select a genre' />
 						</SelectTrigger>
 						<SelectContent>

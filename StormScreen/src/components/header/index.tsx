@@ -49,6 +49,8 @@ export default function Header() {
 	const { isAuth } = useAuth()
 	const isPathReady = useRef(false)
 	const isAccReady = useRef(false)
+
+	const [isUserAuth, setIsUserAuth] = useState<boolean>(localStorage.getItem('isAuth') == 'true' ? true : false)
 	const [userInfo, setUserInfo] = useState({ email: '', displayName: '' })
 	const [open, setOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
@@ -99,6 +101,7 @@ export default function Header() {
 				setUserInfo({ displayName: displayName ? displayName : '', email: email as string })
 				isAccReady.current = true
 				localStorage.setItem('isAuth', 'true')
+				setIsUserAuth(true)
 				const uid = user.uid
 				// ...
 			} else {
@@ -112,6 +115,20 @@ export default function Header() {
 			isLoaded.current = true
 		}
 	}, [isAccReady, isPathReady])
+
+	useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'isAuth') {
+        setIsUserAuth(event.newValue === 'true');
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
 	const handleSearch = () => {
 		setSearchValue(searchInput.current?.value || '')
@@ -127,12 +144,14 @@ export default function Header() {
 		signOut(auth)
 			.then(() => {
 				localStorage.setItem('isAuth', 'false')
+				setIsUserAuth(false);
 				console.log('success!')
 			})
 			.catch(err => {
 				console.log('error when logging out', err)
 			})
 	}
+	console.log(isUserAuth, 'isUserAuth')
 	return (
 		<>
 			<nav className='flex flex-col h-[100vh] bg-white w-[60px] border-r fixed mt-0 items-center justify-between top-0 left-0 mr-[100px] dark:bg-black dark:border-slate-800'>
@@ -155,12 +174,10 @@ export default function Header() {
 				</div>
 
 				<div>
-					{isAuth && (
+					{isUserAuth && (
 						<Card
 						onClick={() => {
-									
 							logOut()
-							
 						}}
 						className='mb-5 p-[5px] transition-all rounded-lg'>
 							<Link to={'/home'}>
@@ -230,7 +247,7 @@ export default function Header() {
 							placeholder='Search'
 							onClick={() => setOpen(true)}
 						/>
-						<RenderAvatar  displayName={displayName!} email={email!}/>
+						<RenderAvatar isAuth={isUserAuth} displayName={displayName!} email={email!}/>
 					</div>
 					<CommandDialog open={open} onOpenChange={setOpen}>
 						<CommandInput

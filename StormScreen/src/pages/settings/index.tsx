@@ -103,15 +103,15 @@ const Settings: React.FC = () => {
 								</DialogTrigger>
 								<DialogContent>
 									<DialogHeader className='gap-2'>
-										<DialogTitle>Account Details</DialogTitle>
-										<Label htmlFor='details-email' className='pt-[10px] '>
+										<DialogTitle className='dark:text-slate-50'>Account Details</DialogTitle>
+										<Label htmlFor='details-email' className='pt-[10px] dark:text-slate-50'>
 											E-Mail
 										</Label>
 										<div className='flex justify-between relative'>
 											<Input
 												disabled
 												id='details-email'
-												className='w-full'
+												className='w-full dark:text-slate-50'
 												defaultValue={email ? email : ''}
 											/>
 											<Card
@@ -122,11 +122,11 @@ const Settings: React.FC = () => {
 										</div>
 
 										<Separator className='w-full my-[7px]' />
-										<Label htmlFor='details-favorites'>Total Favorites</Label>
+										<Label className='dark:text-slate-50' htmlFor='details-favorites'>Total Favorites</Label>
 										<Input
 											disabled
 											id='details-favorites'
-											className='w-[200px]'
+											className='w-[200px] dark:text-slate-50'
 											defaultValue={15}
 										/>
 									</DialogHeader>

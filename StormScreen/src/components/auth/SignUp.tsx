@@ -46,7 +46,7 @@ const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
 					name='displayName'
 					render={({ field }) => (
 						<FormItem className=''>
-							<FormLabel>Display Name</FormLabel>
+							<FormLabel className='dark:text-white'>Display Name</FormLabel>
 							<FormControl>
 								<Input type='text' placeholder='Brad Pitt' {...field} />
 							</FormControl>
@@ -59,7 +59,7 @@ const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
 					name='email'
 					render={({ field }) => (
 						<FormItem className='!mt-3'>
-							<FormLabel>E-Mail</FormLabel>
+							<FormLabel className='dark:text-white'>E-Mail</FormLabel>
 							<FormControl>
 								<Input type='email' placeholder='stormcloak@stormscreen.com' {...field} />
 							</FormControl>
@@ -72,7 +72,7 @@ const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
 					name='password'
 					render={({ field }) => (
 						<FormItem className='!mt-3'>
-							<FormLabel>Password</FormLabel>
+							<FormLabel className='dark:text-white'>Password</FormLabel>
 							<FormControl>
 								<Input type='password' placeholder='password' {...field} />
 							</FormControl>
