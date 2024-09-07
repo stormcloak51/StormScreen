@@ -19,18 +19,20 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useToast } from '@/components/ui/use-toast'
 import useAuth from '@/hooks/use-auth'
-import { setUser } from '@/store/auth/userSlice'
+
 import { RootState } from '@/store/store'
 import { Separator } from '@/components/ui/separator'
-import { getAuth, onAuthStateChanged, updateProfile, User } from 'firebase/auth'
+import { getAuth, updateProfile,  } from 'firebase/auth'
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Copy, MailCheck } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Settings: React.FC = () => {
+	const navigate = useNavigate()
 	const { toast } = useToast()
 	const displayNameRef = useRef<HTMLInputElement>(null)
-	const {isAuth} = useAuth()
+	const { isAuth } = useAuth()
 	const { email, displayName } = useSelector((state: RootState) => state.user)
 
 	console.log(!!email, isAuth, 'watchi this lineyy')
@@ -60,7 +62,7 @@ const Settings: React.FC = () => {
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						<MailCheck style={{ marginRight: '8px' }} />
 						<span>Success</span>
-					</div> 
+					</div>
 				),
 				description: 'Email copied to clipboard.',
 			})
@@ -78,7 +80,24 @@ const Settings: React.FC = () => {
 			<TabsList className='grid w-[400px] grid-cols-1'>
 				<TabsTrigger value='account'>Account</TabsTrigger>
 			</TabsList>
-			<TabsContent value='account'>
+			{!isAuth && (
+				<TabsContent
+					value='account'
+					className='w-full flex justify-center items-center absolute z-10'>
+					<div className='mt-[50px] flex flex-col justify-center items-center pr-[150px]'>
+						<h1 className='text-3xl font-bold !blur-0 z-1 dark:text-slate-200'>You haven't logged in 🧐</h1>
+						<div className='flex gap-5'>
+							<Button className='mt-4' onClick={() => navigate(-1)}>
+								Go Back
+							</Button>
+							<Button className='mt-4' asChild>
+								<Link to='/auth'>Login</Link>
+							</Button>
+						</div>
+					</div>
+				</TabsContent>
+			)}
+			<TabsContent value='account' className={isAuth ? '' : 'blur'}>
 				<Card>
 					<CardHeader>
 						<CardTitle>Account</CardTitle>
@@ -94,15 +113,17 @@ const Settings: React.FC = () => {
 								id='name'
 								className='w-[200px]'
 								defaultValue={displayName ? displayName : ''}
+								disabled={isAuth ? false : true}
 							/>
 						</div>
 						<div className='space-y-1 w-auto ml-auto'>
 							<Dialog>
-								<DialogTrigger asChild>
+								<DialogTrigger asChild disabled={isAuth ? false : true}>
 									<Button>View Account Details</Button>
 								</DialogTrigger>
 								<DialogContent>
 									<DialogHeader className='gap-2'>
+										
 										<DialogTitle className='dark:text-slate-50'>Account Details</DialogTitle>
 										<Label htmlFor='details-email' className='pt-[10px] dark:text-slate-50'>
 											E-Mail
@@ -122,7 +143,9 @@ const Settings: React.FC = () => {
 										</div>
 
 										<Separator className='w-full my-[7px]' />
-										<Label className='dark:text-slate-50' htmlFor='details-favorites'>Total Favorites</Label>
+										<Label className='dark:text-slate-50' htmlFor='details-favorites'>
+											Total Favorites
+										</Label>
 										<Input
 											disabled
 											id='details-favorites'
@@ -139,7 +162,9 @@ const Settings: React.FC = () => {
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Button onClick={handleUpdate}>Save changes</Button>
+						<Button disabled={isAuth ? false : true} onClick={handleUpdate}>
+							Save changes
+						</Button>
 					</CardFooter>
 				</Card>
 			</TabsContent>

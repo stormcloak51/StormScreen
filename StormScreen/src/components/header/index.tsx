@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { searchAll } from '@/services/api'
-import { Clapperboard, DoorOpen, Film, House, Settings, Slash, SunMoon } from 'lucide-react'
+import { Clapperboard, DoorOpen, Film, House, Search, Settings, Slash, SunMoon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, redirect, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
@@ -38,7 +38,8 @@ import { setUser } from '@/store/auth/userSlice'
 import { RootState } from '@/store/store'
 import RenderAvatar from './RenderAvatar'
 
-
+import { useMediaQuery } from 'react-responsive'
+import BreadcrumbNavigator from './Breadcrumb'
 
 export default function Header() {
 	const { setTheme, theme } = useTheme()
@@ -50,66 +51,39 @@ export default function Header() {
 	const isPathReady = useRef(false)
 	const isAccReady = useRef(false)
 
-	const [isUserAuth, setIsUserAuth] = useState<boolean>(localStorage.getItem('isAuth') == 'true' ? true : false)
-	const [userInfo, setUserInfo] = useState({ email: '', displayName: '' })
+	const [isUserAuth, setIsUserAuth] = useState<boolean>(
+		localStorage.getItem('isAuth') == 'true' ? true : false,
+	)
 	const [open, setOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
-	const [pathBreadcrumb, setPathBreadcrumb] = useState<string[] | null>([])
 
 	const params = useParams()
 	const location = useLocation()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	const { email, displayName } = useSelector((state: RootState) => state.user)
+	console.log(params.id, 'Watch th')
+	const isLaptop: boolean = useMediaQuery({ query: '(max-width: 1069px)' })
+	const isTablet: boolean = useMediaQuery({ query: '(max-width: 930px)' })
 
-	useEffect(() => {
-		setPathBreadcrumb(null)
-		const path = location.pathname.split('/').filter((item: string) => item !== '')
-		if (params && params.id) {
-			path.pop()
-			searchAll('movie', params.id)
-				.then(res => {
-					const name = res.title
-					path.push(name)
-					setPathBreadcrumb(path)
-					isPathReady.current = true
-				})
-				.catch(err => {
-					console.log(err)
-					if (window.confirm('Movie not found')) {
-						navigate('/home')
-					}
-				})
-		} else {
-			setPathBreadcrumb(path)
-		}
-	}, [location.pathname])
+	const { email, displayName } = useSelector((state: RootState) => state.user)
 
 	useEffect(() => {
 		const auth = getAuth()
 		onAuthStateChanged(auth, user => {
 			if (user) {
-				// User is signed in, see docs for a list of available properties
-				// https://firebase.google.com/docs/reference/js/auth.user
 				const email = user.email,
 					displayName = user.displayName,
 					// token = user.refreshToken,
 					id = user.uid
 				dispatch(setUser({ email, displayName, id }))
-				console.log(email)
-				setUserInfo({ displayName: displayName ? displayName : '', email: email as string })
 				isAccReady.current = true
 				localStorage.setItem('isAuth', 'true')
 				setIsUserAuth(true)
-				const uid = user.uid
-				// ...
-			} else {
-				// User is signed out
-				// ...
 			}
 		})
 	}, [isAuth])
+
 	useEffect(() => {
 		if (isAccReady.current && isPathReady.current) {
 			isLoaded.current = true
@@ -117,18 +91,18 @@ export default function Header() {
 	}, [isAccReady, isPathReady])
 
 	useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'isAuth') {
-        setIsUserAuth(event.newValue === 'true');
-      }
-    };
+		const handleStorageChange = (event: StorageEvent) => {
+			if (event.key === 'isAuth') {
+				setIsUserAuth(event.newValue === 'true')
+			}
+		}
 
-    window.addEventListener('storage', handleStorageChange);
+		window.addEventListener('storage', handleStorageChange)
 
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+		return () => {
+			window.removeEventListener('storage', handleStorageChange)
+		}
+	}, [])
 
 	const handleSearch = () => {
 		setSearchValue(searchInput.current?.value || '')
@@ -144,7 +118,7 @@ export default function Header() {
 		signOut(auth)
 			.then(() => {
 				localStorage.setItem('isAuth', 'false')
-				setIsUserAuth(false);
+				setIsUserAuth(false)
 				console.log('success!')
 			})
 			.catch(err => {
@@ -176,14 +150,12 @@ export default function Header() {
 				<div>
 					{isUserAuth && (
 						<Card
-						onClick={() => {
-							logOut()
-						}}
-						className='mb-5 p-[5px] transition-all rounded-lg'>
+							onClick={() => {
+								logOut()
+							}}
+							className='mb-5 p-[5px] transition-all rounded-lg'>
 							<Link to={'/home'}>
-							<DoorOpen
-								className='stroke-black dark:stroke-white scale-100 hover:scale-105 cursor-pointer'
-							/>
+								<DoorOpen className='stroke-black dark:stroke-white scale-100 hover:scale-105 cursor-pointer' />
 							</Link>
 						</Card>
 					)}
@@ -201,53 +173,65 @@ export default function Header() {
 			</nav>
 			<header className='inline w-[90%] mr-[50px]'>
 				<section className='self-start flex items-center pl-[100px] pr-[24px] justify-between w-[100%] py-[15px] dark:bg-black'>
-					<Breadcrumb className=''>
-						<BreadcrumbList>
-							{pathBreadcrumb && isLoaded ? (
-								pathBreadcrumb.map((item, index) => {
-									if (index !== pathBreadcrumb.length - 1) {
-										return (
-											<Fragment key={index}>
-												<BreadcrumbItem>
-													<BreadcrumbLink
-														className='text-2xl transition-all font-bold text-black dark:text-white dark:hover:text-slate-300'
-														href={`/${item}`}>
-														{item}
-													</BreadcrumbLink>
-												</BreadcrumbItem>
-												<BreadcrumbSeparator className='translate-y-[2px] scale-[1.5]'>
-													<Slash />
-												</BreadcrumbSeparator>
-											</Fragment>
-										)
-									}
-									return (
-										<Fragment key={index}>
-											<BreadcrumbItem>
-												<BreadcrumbPage className='text-2xl transition-all cursor-pointer font-bold text-black dark:text-white dark:hover:text-slate-300'>
-													{item}
-												</BreadcrumbPage>
-											</BreadcrumbItem>
-											<BreadcrumbSeparator className='translate-y-[2px] scale-[1.5]'>
-												<Slash />
-											</BreadcrumbSeparator>
-										</Fragment>
-									)
-								})
-							) : (
-								<SkeletonBreadcrumb />
-							)}
-						</BreadcrumbList>
-					</Breadcrumb>
-
+					{!isTablet ? (
+						<BreadcrumbNavigator />
+						// <Breadcrumb className=''>
+						// 	<BreadcrumbList>
+						// 		{pathBreadcrumb && isLoaded ? (
+						// 			pathBreadcrumb.map((item, index) => {
+						// 				if (index !== pathBreadcrumb.length - 1) {
+						// 					return (
+						// 						<Fragment key={index}>
+						// 							<BreadcrumbItem>
+						// 								<BreadcrumbLink
+						// 									className='text-2xl transition-all font-bold text-black dark:text-white dark:hover:text-slate-300'
+						// 									href={`/${item}`}>
+						// 									{item}
+						// 								</BreadcrumbLink>
+						// 							</BreadcrumbItem>
+						// 							<BreadcrumbSeparator className='translate-y-[2px] scale-[1.5]'>
+						// 								<Slash />
+						// 							</BreadcrumbSeparator>
+						// 						</Fragment>
+						// 					)
+						// 				}
+						// 				return (
+						// 					<Fragment key={index}>
+						// 						<BreadcrumbItem>
+						// 							<BreadcrumbPage className='text-2xl transition-all cursor-pointer font-bold text-black dark:text-white dark:hover:text-slate-300'>
+						// 								{item}
+						// 							</BreadcrumbPage>
+						// 						</BreadcrumbItem>
+						// 						<BreadcrumbSeparator className='translate-y-[2px] scale-[1.5]'>
+						// 							<Slash />
+						// 						</BreadcrumbSeparator>
+						// 					</Fragment>
+						// 				)
+						// 			})
+						// 		) : (
+						// 			<SkeletonBreadcrumb />
+						// 		)}
+						// 	</BreadcrumbList>
+						// </Breadcrumb>
+					) : (
+						isTablet && params.id ? (<Button onClick={() => navigate(-1)}>Go Back</Button>) : !isTablet && (
+							null
+						)
+					)}
 					<div className='profile flex ml-auto items-center justify-self-end'>
-						<Filters />
-						<Input
-							className='ml-[30px] mr-[25px]'
-							placeholder='Search'
-							onClick={() => setOpen(true)}
-						/>
-						<RenderAvatar isAuth={isUserAuth} displayName={displayName!} email={email!}/>
+						<Filters isMobile={isLaptop} />
+						{!isLaptop ? (
+							<Input
+								className='ml-[30px] mr-[25px]'
+								placeholder='Search'
+								onClick={() => setOpen(true)}
+							/>
+						) : (
+							<Button size='sm' className='ml-5' onClick={() => setOpen(true)}>
+								<Search />
+							</Button>
+						)}
+						<RenderAvatar isAuth={isUserAuth} displayName={displayName!} email={email!} />
 					</div>
 					<CommandDialog open={open} onOpenChange={setOpen}>
 						<CommandInput

@@ -44,7 +44,6 @@ export const api = createApi({
 				return [{type: 'List', id: result?.results[0].id}]
 			}
 		}),
-    // The query accepts a number and returns a Post
     getMovie: build.query<Item, number>({
       query: (id) => ({ url: `movie/${id}`, params: { api_key: apiKey } }),
 			providesTags: (__, _, id) => {

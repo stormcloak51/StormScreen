@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom'
 import { Label } from '../ui/label'
 import { useGetGenresQuery } from '@/store/apiSlices/movies'
 import { Separator } from '../ui/separator'
+import { Filter } from 'lucide-react'
 
 export interface FiltersOptions {
 	sort_by: string
@@ -36,10 +37,16 @@ export interface FiltersOptions {
 	page: number,
 }
 
-const Filters: FC = () => {
+export type FilterProps = {
+	isMobile?: boolean
+}
+
+const Filters: FC<FilterProps> = ({isMobile}) => {
 	const navigate = useNavigate()
 	const [openSheet, setOpenSheet] = useState(false)
 	const [genre, setGenre] = useState('')
+	console.log(isMobile, 'djdjdjd')
+
 
 	const [filterValue, setFilterValue] = useState<FiltersOptions>({
 		sort_by: 'popularity.desc',
@@ -75,7 +82,23 @@ const Filters: FC = () => {
 	return (
 		<Sheet open={openSheet}>
 			<SheetTrigger asChild>
-				<Button onClick={() => setOpenSheet(true)}>Filter Options</Button>
+				{
+					isMobile ? (
+						<Button
+							size='sm'
+							onClick={() => setOpenSheet(true)}
+							>
+							<Filter />
+						</Button>
+					) : (
+						<Button
+							size='sm'
+							onClick={() => setOpenSheet(true)}
+							>
+							Filter Options
+						</Button>
+					)
+				}
 			</SheetTrigger>
 			<SheetContent className='w-[400px] sm:w-[540px]'>
 				<SheetHeader className='border-b'>
