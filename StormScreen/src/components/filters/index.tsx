@@ -45,8 +45,6 @@ const Filters: FC<FilterProps> = ({isMobile}) => {
 	const navigate = useNavigate()
 	const [openSheet, setOpenSheet] = useState(false)
 	const [genre, setGenre] = useState('')
-	console.log(isMobile, 'djdjdjd')
-
 
 	const [filterValue, setFilterValue] = useState<FiltersOptions>({
 		sort_by: 'popularity.desc',

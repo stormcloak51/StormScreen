@@ -15,7 +15,6 @@ const RenderAvatar: FC<IAvatar> = ({isAuth, email, displayName }) => {
 	// const [isAuth, setIsAuth] = useState<boolean>(localStorage.getItem('isAuth') == 'true' ? true : false)
 
 	if (isAuth && email) {
-		console.log(displayName, 'ssssse')
 		return (
 			<>
 				<Avatar className='ml-[30px] mr-[10px]'>

@@ -13,7 +13,7 @@ type MovieListType = {
 const MovieList: FC<MovieListType> = ({ data, title }) => {
 	return (
 		<>
-			<h1 className='mt-[25px] text-5xl font-inter font-bold mb-[10px] leading-tight bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white'>
+			<h1 className='mt-[5px] text-5xl font-inter font-bold mb-[10px] leading-tight bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white max-laptop:text-4xl'>
 				{title}
 			</h1>
 			

@@ -35,8 +35,6 @@ const Settings: React.FC = () => {
 	const { isAuth } = useAuth()
 	const { email, displayName } = useSelector((state: RootState) => state.user)
 
-	console.log(!!email, isAuth, 'watchi this lineyy')
-
 	const handleUpdate = async () => {
 		const auth = getAuth()
 		const user = auth.currentUser
@@ -53,7 +51,6 @@ const Settings: React.FC = () => {
 
 	const handleCopy = async () => {
 		try {
-			// console.log(document.querySelector('#details-email')?.getAttribute('value'))
 			await navigator.clipboard.writeText(
 				document.querySelector('#details-email')?.getAttribute('value') as string,
 			)

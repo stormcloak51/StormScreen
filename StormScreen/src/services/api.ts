@@ -9,6 +9,7 @@ export type DataProps = {
 	name: string,
 	backdrop_path: string,
 	id: number,
+	popularity: number,
 	media_type: string,
 	poster_path: string,
 	vote_average: number,

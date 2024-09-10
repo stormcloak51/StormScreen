@@ -13,7 +13,6 @@ const BreadcrumbNavigator = () => {
 	const [pathBreadcrumb, setPathBreadcrumb] = useState<string[] | null>([])
 	const isPathReady = useRef(false)
 
-
 	const params = useParams()
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -21,39 +20,34 @@ const BreadcrumbNavigator = () => {
 	const title = useSelector((state: RootState) => state.movieSlice.item.title)
 
 	useEffect(() => {
+		isPathReady.current = false
 		setPathBreadcrumb(null)
 		const path = location.pathname.split('/').filter((item: string) => item !== '')
-		if (params && params.id) {
+		if (params && params.id && title != '') {
 			path.pop()
 			try {
+				
 				path.push(title)
 				setPathBreadcrumb(path)
 				isPathReady.current = true
 			} catch (error) {
 				console.log(error)
 			}
-			// searchAll('movie', params.id)
-			// 	.then(res => {
-			// 		const name = res.title
-			// 		path.push(name)
-			// 		setPathBreadcrumb(path)
-			// 		isPathReady.current = true
-			// 	})
-			// 	.catch((err: string) => {
-			// 		console.log(err)
-			// 		if (window.confirm('Movie not found')) {
-			// 			navigate('/home')
-			// 		}
-			// 	})
 		} else {
+			if (params.id) {
+				path.pop()
+				isPathReady.current = false
+			} else {
+				isPathReady.current = true
+			}
 			setPathBreadcrumb(path)
 		}
-	}, [location.pathname])
+	}, [location.pathname, title])
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [params.id])
-
+	
 	return (
 		<Breadcrumb className=''>
 		<BreadcrumbList>

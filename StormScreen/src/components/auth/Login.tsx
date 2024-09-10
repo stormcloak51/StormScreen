@@ -15,11 +15,10 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
 
 interface LoginProps {
-  form: UseFormReturn<{ email: string; password: string; displayName?: string | undefined; }, any, undefined>;
-  onSubmit: (values: { email: string; password: string; displayName?: string | undefined; }) => void;
+  form: UseFormReturn<{ email: string; password: string; displayName?: string | undefined; }, undefined>;
 }
 
-const Login: FC<LoginProps> = ({ form, onSubmit }) => {
+const Login: FC<LoginProps> = ({ form }) => {
 	const dispatch = useDispatch()
 	const handleLogin = () => {
 		const auth = getAuth()
@@ -38,13 +37,13 @@ const Login: FC<LoginProps> = ({ form, onSubmit }) => {
 			.catch(error => {
 				const errorCode = error.code
 				const errorMessage = error.message
+				console.log(errorCode, errorMessage)
 			})
 	}
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={(e) => {
 				e.preventDefault()
-				form.handleSubmit(onSubmit)
 				handleLogin()
 				}} className='space-y-8'>
 				<FormField

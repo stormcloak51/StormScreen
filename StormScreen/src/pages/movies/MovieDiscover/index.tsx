@@ -57,7 +57,7 @@ const MovieDiscover = () => {
 								<div
 									key={id}
 									className='w-[200px] p-1 rounded-xl'
-									onClick={() => console.log(movie.popularity)}>
+									>
 									<Card className='rounded-xl'>
 										<CardContent className='p-0 flex flex-col items-center justify-center group relative'>
 											<img

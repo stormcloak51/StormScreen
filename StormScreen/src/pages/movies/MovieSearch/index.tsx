@@ -19,13 +19,8 @@ import sortBy from 'lodash/sortBy'
 const MovieSearch: FC = () => {
 	const [urlParams] = useSearchParams()
 	const searchValue = urlParams.get('searchFor')
-	// console.log(qUrl)
 
 	const [page, setPage] = useState(Number(urlParams.get('page')) || 1)
-
-	console.log(urlParams.get('searchFor'))
-
-	console.log(page)
 
 	const { data: searchData } = useGetMoviesQuery({query: searchValue ? searchValue : '', page: Number(urlParams.get('page')) || page})
 
@@ -48,7 +43,7 @@ const MovieSearch: FC = () => {
 								<div
 									key={movie.id}
 									className='w-[200px] p-1 rounded-xl'
-									onClick={() => console.log(movie.popularity)}>
+									>
 									<Card className='rounded-xl'>
 										<CardContent className='p-0 flex flex-col items-center justify-center group relative'>
 											<img

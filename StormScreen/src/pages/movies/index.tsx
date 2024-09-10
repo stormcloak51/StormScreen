@@ -49,11 +49,11 @@ export const Movies = () => {
 	])
 
 	return (
-		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px] dark:bg-black dark:border-slate-800'>
+		<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px] dark:bg-black dark:border-slate-800 '>
 			<section>
 				{isSuccessMovies && (
 					<>
-						<h1 className='mt-[25px] leading-tight text-5xl mb-[10px] font-inter font-bold inline-block bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white'>
+						<h1 className='mt-[25px] leading-tight text-5xl mb-[10px] font-inter font-bold inline-block bg-black bg-gradient-to-r from-black via-red-600 bg-clip-text dark:from-white dark:via-red-600 dark:bg-white max-laptop:text-4xl'>
 							Trending Movies
 						</h1>
 						<Carousel
@@ -67,7 +67,7 @@ export const Movies = () => {
 								{trendingMovies?.results.map(obj => {
 									return (
 										<CarouselItem
-											className='relative transition-all duration-300 basis-1/2'
+											className='relative transition-all duration-300 phoneTable:basis-1/2'
 											key={obj.id}>
 											<div className='bg-background border rounded-xl bg-background shadow-lg mb-[50px] mx-auto dark:border-slate-800'>
 												<img
@@ -75,11 +75,11 @@ export const Movies = () => {
 													src={`https://image.tmdb.org/t/p/w1280${obj.backdrop_path}`}
 												/>
 												<div className='px-[25px] pb-[25px]'>
-													<div className='flex justify-between border-b py-[8px] dark:border-slate-600'>
-														<div className='scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-3xl dark:text-white'>
+													<div className='flex justify-between border-b py-[8px] dark:border-slate-600 max-laptop:py-[4px]'>
+														<div className='scroll-m-20 text-3xl font-extrabold tracking-tight dark:text-white max-[1069px]:text-2xl'>
 															{obj.title || obj.name}
 														</div>
-														<div className='scroll-m-20 text-3xl text-red-600 font-extrabold tracking-tight lg:text-3xl'>
+														<div className='scroll-m-20 text-3xl text-red-600 font-extrabold tracking-tight max-[1069px]:text-2xl'>
 															Rating: {obj.vote_average.toFixed(1)}
 														</div>
 													</div>

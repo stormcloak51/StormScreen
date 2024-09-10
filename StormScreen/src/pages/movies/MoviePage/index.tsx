@@ -23,22 +23,18 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { useState } from 'react'
 import { Item } from '@/store/home/slice'
-import {
-	Pagination,
-	PaginationContent,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
-} from '@/components/ui/pagination'
+import { useDispatch } from 'react-redux'
+import { setMovie } from '@/store/movies/slice'
+import Reviews from '@/components/reviews'
 
 const MoviePage = () => {
 	const searchParams = useParams()
+	const dispatch = useDispatch()
 
+	const [isPatched, setIsPatched] = useState(false)
 	const [page, setPage] = useState(1)
 
-	const { data: movieData } = useGetMovieQuery(+(searchParams.id ?? NaN))
+	const { data: movieData, isSuccess: isSuccessMovie } = useGetMovieQuery(+(searchParams.id ?? NaN))
 	const { data: videoData, isSuccess: isSuccessVideo } = useGetMovieVideoQuery({
 		type: 'movie',
 		id: +(searchParams.id ?? NaN),
@@ -49,19 +45,23 @@ const MoviePage = () => {
 	const { data: recommendationsMovies, isSuccess: isSuccessRecommendations } =
 		useGetRecommendationsQuery({ query: searchParams.id ?? '', page })
 
+	if (isSuccessMovie && !isPatched) {
+		dispatch(setMovie(movieData))
+	}
+
 	return (
 		<>
-			<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px] py-[30px] dark:border-slate-600'>
+			<main className='rounded-xl border bg-card text-card-foreground shadow px-[30px] py-[30px] dark:border-slate-600 max-lg:px-[20px]'>
 				<section className='flex w-full justify-between max-lg:flex-wrap'>
-					<div className='flex max-lg:pb-5 max-lg:border-b max-lg:dark:border-slate-600'>
-						<div className='flex-shrink-0'>
+					<div className='flex max-lg:pb-5 max-lg:border-b max-lg:dark:border-slate-600 max-sm:flex-wrap'>
+						<div className='flex-shrink-0 basis-1/4 max-sm:basis-[100%] max-md:basis-1/2 max-sm:border-b max-sm:pb-5'>
 							<img
 								src={`https://image.tmdb.org/t/p/original${movieData?.poster_path}`}
 								alt=''
-								className='w-[300px] rounded-xl'
+								className='w-[300px] rounded-xl max-sm:mx-auto'
 							/>
 						</div>
-						<div className='flex-grow ml-4 border-x px-3 dark:border-slate-600 max-lg:border-x-0 max-lg:border-l'>
+						<div className='ml-4 border-x px-3 dark:border-slate-600 max-lg:border-x-0 max-lg:border-l max-sm:border-none max-sm:border-b max-sm:pt-3'>
 							<h1 className='text-3xl font-inter font-bold mb-[10px] leading-tight border-b dark:border-slate-600 dark:text-white'>
 								{movieData?.title}
 							</h1>
@@ -72,7 +72,7 @@ const MoviePage = () => {
 								<DialogTrigger asChild>
 									<Button className='mt-[30px]'>Watch Trailer</Button>
 								</DialogTrigger>
-								<DialogContent className='sm:max-w-2xl px-4'>
+								<DialogContent className='min-w-[800px] px-4 max-lg:min-w-[600px] max-md:min-w-full'>
 									<DialogHeader>
 										<DialogTitle className='dark:text-white'>
 											{movieData?.title} - Trailer
@@ -81,14 +81,15 @@ const MoviePage = () => {
 									.
 								</DialogDescription> */}
 									</DialogHeader>
-									<div className='flex items-center space-x-2'>
-
+									<div className='flex items-center space-x-2 w-full'>
 										{!isSuccessVideo ? (
 											<p>Loading...</p>
 										) : (
 											<ReactPlayer
 												url={`https://www.youtube.com/watch?v=${videoData?.results[0]?.key}`}
 												playing
+												controls
+												width='100%'
 											/>
 										)}
 									</div>
@@ -103,7 +104,7 @@ const MoviePage = () => {
 							</Dialog>
 						</div>
 					</div>
-					<div className='flex-shrink-0 flex flex-col justify-between ml-[20px] max-lg:flex-row max-lg:ml-0 max-lg:items-center max-lg:w-full max-lg:mt-5'>
+					<div className='flex-shrink-0 flex flex-col justify-between ml-[20px] max-lg:flex-row max-lg:ml-0 max-lg:items-center max-lg:w-full max-lg:mt-5 ml:flex-col'>
 						<HoverCard>
 							<HoverCardTrigger asChild>
 								<Button variant='link'>
@@ -159,9 +160,10 @@ const MoviePage = () => {
 					</div>
 				</section>
 			</main>
-			<main className='mt-[50px] rounded-xl border bg-card text-card-foreground shadow px-[30px] py-[30px] dark:border-slate-600'>
-				<section className='flex w-full justify-between'>
-					<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 auto-rows-auto'>
+			<Reviews />
+			<main className='mt-[50px] rounded-xl border bg-card text-card-foreground shadow px-[30px] py-[30px] dark:border-slate-600 max-lg:px-[20px]'>
+				<section className='flex w-full justify-center items-center'>
+					<div className='grid asset-grid gap-4 auto-rows-auto'>
 						{recommendationsMovies &&
 							recommendationsMovies.results?.map((movie: Item) => {
 								if (!movie.poster_path) {
@@ -172,7 +174,7 @@ const MoviePage = () => {
 									<div
 										key={movie.id}
 										className='w-[200px] p-1 rounded-xl'
-										onClick={() => console.log(movie.popularity)}>
+										>
 										<Card className='rounded-xl'>
 											<CardContent className='p-0 flex flex-col items-center justify-center group relative'>
 												<img

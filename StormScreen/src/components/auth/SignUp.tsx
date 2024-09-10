@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { auth } from './firebase'
+import { auth } from '../../firebase'
 import { Button } from '../ui/button'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
@@ -9,11 +9,10 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
 
 type SignUpProps = {
-	form: UseFormReturn<{ email: string; password: string, displayName?: string | undefined }, any, undefined>
-	onSubmit: (values: { email: string; password: string, displayName: string }) => void
+	form: UseFormReturn<{ email: string; password: string, displayName?: string | undefined }, undefined>
 }
 
-const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
+const SignUp: FC<SignUpProps> = ({ form }) => {
 	const dispatch = useDispatch()
 	const handleSignUp = async () => {
 		const { displayName, email, password } = form.getValues()
@@ -27,9 +26,10 @@ const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
 				displayName: user.displayName,
 				id: user.uid
 			}))
-		} catch (error) {
+		} catch (error: unknown) {
 			const errorCode = error.code
 			const errorMessage = error.message
+			console.log(errorCode, errorMessage)
 		}
 	}
 	return (
@@ -37,7 +37,6 @@ const SignUp: FC<SignUpProps> = ({ form, onSubmit }) => {
 			<form
 				onSubmit={e => {
 					e.preventDefault()
-					form.handleSubmit(onSubmit)
 					handleSignUp()
 				}}
 				className='space-y-8'>

@@ -17,11 +17,6 @@ const Auth = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 	})
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values)
-	}
 
 	return (
 		<Tabs defaultValue='login' className='w-[400px] min-h-[100%] mx-auto mt-[120px]'>
@@ -30,10 +25,10 @@ const Auth = () => {
 				<TabsTrigger value='signup'>Sign Up</TabsTrigger>
 			</TabsList>
 			<TabsContent value='login'>
-				<Login form={form} onSubmit={onSubmit} />
+				<Login form={form} />
 			</TabsContent>
 			<TabsContent value='signup'>
-				<SignUp form={form} onSubmit={onSubmit}  />
+				<SignUp form={form} />
 			</TabsContent>
 		</Tabs>
 	)
