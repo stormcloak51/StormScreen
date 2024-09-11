@@ -27,6 +27,7 @@ const initialState: MovieItem = {
 		poster_path: '',
 		title: '',
 		name: '',
+		popularity: NaN,
 		vote_average: NaN,
 	},
 	video: {

@@ -23,7 +23,7 @@ import useAuth from '@/hooks/use-auth'
 import { RootState } from '@/store/store'
 import { Separator } from '@/components/ui/separator'
 import { getAuth, updateProfile,  } from 'firebase/auth'
-import { useRef } from 'react'
+import { ReactElement, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Copy, MailCheck } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -54,12 +54,13 @@ const Settings: React.FC = () => {
 			await navigator.clipboard.writeText(
 				document.querySelector('#details-email')?.getAttribute('value') as string,
 			)
+
 			toast({
 				title: (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						<MailCheck style={{ marginRight: '8px' }} />
 						<span>Success</span>
-					</div>
+					</div> as ReactElement & string
 				),
 				description: 'Email copied to clipboard.',
 			})

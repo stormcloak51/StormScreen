@@ -31,8 +31,8 @@ const MoviePage = () => {
 	const searchParams = useParams()
 	const dispatch = useDispatch()
 
-	const [isPatched, setIsPatched] = useState(false)
-	const [page, setPage] = useState(1)
+	const [isPatched] = useState(false)
+	const [page] = useState(1)
 
 	const { data: movieData, isSuccess: isSuccessMovie } = useGetMovieQuery(+(searchParams.id ?? NaN))
 	const { data: videoData, isSuccess: isSuccessVideo } = useGetMovieVideoQuery({
@@ -42,7 +42,7 @@ const MoviePage = () => {
 
 	const { data: providersData } = useGetMovieProvidersQuery(+(searchParams.id ?? NaN))
 
-	const { data: recommendationsMovies, isSuccess: isSuccessRecommendations } =
+	const { data: recommendationsMovies } =
 		useGetRecommendationsQuery({ query: searchParams.id ?? '', page })
 
 	if (isSuccessMovie && !isPatched) {

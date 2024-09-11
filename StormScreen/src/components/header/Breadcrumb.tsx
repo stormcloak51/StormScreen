@@ -3,8 +3,7 @@ import { Fragment } from 'react/jsx-runtime'
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '../ui/breadcrumb'
 import SkeletonBreadcrumb from './SkeletonBreadcrumb'
 import { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { searchAll } from '@/services/api'
+import { useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 
@@ -15,7 +14,6 @@ const BreadcrumbNavigator = () => {
 
 	const params = useParams()
 	const location = useLocation()
-	const navigate = useNavigate()
 
 	const title = useSelector((state: RootState) => state.movieSlice.item.title)
 

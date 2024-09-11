@@ -26,10 +26,9 @@ const SignUp: FC<SignUpProps> = ({ form }) => {
 				displayName: user.displayName,
 				id: user.uid
 			}))
-		} catch (error: unknown) {
-			const errorCode = error.code
-			const errorMessage = error.message
-			console.log(errorCode, errorMessage)
+		} catch (error) {
+			
+			console.log(error)
 		}
 	}
 	return (
