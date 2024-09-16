@@ -7,15 +7,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Login from './Login'
 import SignUp from './SignUp'
 
-const formSchema = z.object({
-	email: z.string().min(2).max(50),
-	displayName: z.string().min(2).max(50).optional(),
-	password: z.string().min(2).max(50),
+const signSchema = z.object({
+	email: z.string().min(5).max(50).email(),
+	displayName: z.string().min(2).max(20),
+	username: z.string().min(3).max(20),
+	password: z.string().min(6).max(20),
+})
+const loginSchema = z.object({
+	email: z.string().min(5).max(50),
+	password: z.string().min(6).max(20),
 })
 
+
 const Auth = () => {
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const signForm = useForm<z.infer<typeof signSchema>>({
+		resolver: zodResolver(signSchema),
+	})
+	const loginForm = useForm<z.infer<typeof loginSchema>>({
+		resolver: zodResolver(loginSchema),
 	})
 
 	return (
@@ -25,10 +34,10 @@ const Auth = () => {
 				<TabsTrigger value='signup'>Sign Up</TabsTrigger>
 			</TabsList>
 			<TabsContent value='login'>
-				<Login form={form} />
+				<Login form={loginForm} />
 			</TabsContent>
 			<TabsContent value='signup'>
-				<SignUp form={form} />
+				<SignUp form={signForm} />
 			</TabsContent>
 		</Tabs>
 	)

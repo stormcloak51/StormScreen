@@ -13,12 +13,14 @@ import { Input } from '../ui/input'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 interface LoginProps {
-  form: UseFormReturn<{ email: string; password: string; displayName?: string | undefined; }, undefined>;
+  form: UseFormReturn<{ email: string; password: string; }, undefined>;
 }
 
 const Login: FC<LoginProps> = ({ form }) => {
+	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const handleLogin = () => {
 		const auth = getAuth()
@@ -31,8 +33,10 @@ const Login: FC<LoginProps> = ({ form }) => {
 				dispatch(setUser({
 					email: user.email,
 					token: user.refreshToken,
-					id: user.uid
+					id: user.uid,
+					displayName: user.displayName
 				}))
+				navigate(-1)
 			})
 			.catch(error => {
 				const errorCode = error.code
@@ -53,7 +57,7 @@ const Login: FC<LoginProps> = ({ form }) => {
 						<FormItem>
 							<FormLabel className='dark:text-white'>E-Mail</FormLabel>
 							<FormControl>
-								<Input type='email' placeholder='stormcloak@stormscreen.com' {...field} />
+								<Input type='email' className='dark:text-gray-50' placeholder='stormcloak@stormscreen.com' {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -66,7 +70,7 @@ const Login: FC<LoginProps> = ({ form }) => {
 						<FormItem>
 							<FormLabel className='dark:text-white'>Password</FormLabel>
 							<FormControl>
-								<Input type='password' placeholder='password' {...field} />
+								<Input type='password' className='dark:text-gray-50' placeholder='password' {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

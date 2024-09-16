@@ -5,13 +5,15 @@ type User = {
 	displayName: string | null
 	token: string | null
 	id: number | null
+	username: string | null
 }
 
 const initialState: User = {
 	email: null,
 	displayName: null,
 	token: null,
-	id: null
+	id: null,
+	username: null
 }
 
 const userSlice = createSlice({
@@ -23,12 +25,14 @@ const userSlice = createSlice({
 			state.email = action.payload.email;
 			state.token = action.payload.accessToken;
 			state.displayName = action.payload.displayName;
+			state.username = action.payload.username
 		},
 		deleteUser (state) {
 			state.id = null;
 			state.email = null;
 			state.token = null;
 			state.displayName = null;
+			state.username = null
 		}
 	}
 });

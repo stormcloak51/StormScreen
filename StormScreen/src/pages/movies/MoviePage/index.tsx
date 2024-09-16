@@ -160,7 +160,7 @@ const MoviePage = () => {
 					</div>
 				</section>
 			</main>
-			<Reviews />
+			<Reviews id={searchParams.id!}/>
 			<main className='mt-[50px] rounded-xl border bg-card text-card-foreground shadow px-[30px] py-[30px] dark:border-slate-600 max-lg:px-[20px]'>
 				<section className='flex w-full justify-center items-center'>
 					<div className='grid asset-grid gap-4 auto-rows-auto'>
