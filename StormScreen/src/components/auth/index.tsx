@@ -12,6 +12,7 @@ const signSchema = z.object({
 	displayName: z.string().min(2).max(20),
 	username: z.string().min(3).max(20),
 	password: z.string().min(6).max(20),
+	photo: z.string()
 })
 const loginSchema = z.object({
 	email: z.string().min(5).max(50),

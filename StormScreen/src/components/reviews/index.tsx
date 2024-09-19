@@ -8,10 +8,12 @@ import { Separator } from '../ui/separator'
 import { Skeleton } from '../ui/skeleton'
 import useAuth from '@/hooks/use-auth'
 import { Link } from 'react-router-dom'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 type ReviewProps = {
 	rating: number
 	text: string
+	photoURL: string | null
 	username: string | null
 }
 
@@ -27,8 +29,8 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 	const [reviewsData, setReviewsData] = useState<null | IReviews>(null)
 	const [reviewValue, setReviewValue] = useState('')
 	const [loading, setLoading] = useState(true)
-	const { displayName, isAuth } = useAuth()
-
+	const { displayName, isAuth, photoURL } = useAuth()
+	console.log('phot', photoURL)
 	useEffect(() => {
 		setLoading(true)
 	}, [id])
@@ -64,6 +66,7 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 					...reviewsData.reviews,
 					{
 						rating: 5,
+						photoURL,
 						text: reviewValue,
 						username: displayName,
 					},
@@ -71,10 +74,13 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 			})
 			setLoading(true)
 		} else {
+			console.log('waht')
+
 			await setDoc(doc(db, 'reviews', id), {
 				reviews: [
 					{
 						rating: 5,
+						photoURL,
 						text: reviewValue,
 						username: displayName,
 					},
@@ -84,6 +90,7 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 				reviews: [
 					{
 						rating: 5,
+						photoURL,
 						text: reviewValue,
 						username: displayName,
 					},
@@ -126,6 +133,10 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 							return (
 								<Card key={index}>
 									<CardHeader className='flex flex-row items-center justify-between'>
+										<Avatar>
+											<AvatarImage src='https://github.com/shadcn.png' />
+											<AvatarFallback>{review.username?.substring(0, 2)}</AvatarFallback>
+										</Avatar>
 										<h3 className='text-xl font-bold font-inter'>{review.username}</h3>
 										<h3 className='text-xl font-bold font-inter'>
 											Rating: {Math.round(review.rating * 2) / 2}

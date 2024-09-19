@@ -9,34 +9,45 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/auth/userSlice'
 import { toast } from '../ui/use-toast'
 import { AtSign } from 'lucide-react'
-import {ref} from "firebase/storage"
-import {storage} from "../../firebase"
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { storage } from '../../firebase'
 type SignUpProps = {
 	form: UseFormReturn<
-		{ email: string; password: string; displayName: string; username: string },
+		{ email: string; password: string; displayName: string; username: string; photo: string },
 		undefined
 	>
 }
 
 const SignUp: FC<SignUpProps> = ({ form }) => {
 	// const [username, setUsername] = useState('@')
-	const imagesRef = ref(storage, 'accounts')
-	console.log(imagesRef, 'WHA')
+	const [file, setFile] = useState<File | null | undefined>(null)
+
 	const dispatch = useDispatch()
 	const handleSignUp = async () => {
-		const { displayName, email, password } = form.getValues()
+		const { displayName, email, password, username } = form.getValues()
 
 		try {
+			const arrayBuffer = await file?.arrayBuffer();
+			const blob = new Blob([arrayBuffer!], { type: file?.type });
+			const storageRef = ref(storage, 'accounts/' + username);
+			await uploadBytes(storageRef, blob);
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password)
 			const user = userCredential.user
-			await updateProfile(user, { displayName })
+			console.log('watch this line', storageRef)
+			getDownloadURL(storageRef)
+			.then(async (url) => {
+				await updateProfile(user, {photoURL: url})
+				await updateProfile(user, { displayName })
+				console.log(user)
+			})
 			dispatch(
 				setUser({
 					email: user.email,
 					token: user.refreshToken,
 					displayName: user.displayName,
 					id: user.uid,
-					username: user.displayName
+					username: user.displayName,
+					photo: user.photoURL
 				}),
 			)
 		} catch (error) {
@@ -61,7 +72,7 @@ const SignUp: FC<SignUpProps> = ({ form }) => {
 							<FormLabel className='dark:text-white'>Username</FormLabel>
 							<FormControl>
 								<div className='relative'>
-									<AtSign className='h-4 w-4 absolute top-1/2 -translate-y-1/2 left-2'/>
+									<AtSign className='h-4 w-4 absolute top-1/2 -translate-y-1/2 left-2' />
 									<Input
 										type='text'
 										className='pl-6 dark:text-gray-50'
@@ -125,6 +136,26 @@ const SignUp: FC<SignUpProps> = ({ form }) => {
 									placeholder='password'
 									defaultValue={''}
 									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='photo'
+					render={({ field }) => (
+						<FormItem className='!mt-3'>
+							<FormLabel className='dark:text-white'>Profile Icon</FormLabel>
+							<FormControl>
+								<Input
+									type='file'
+									className='dark:text-gray-50'
+									placeholder='password'
+									defaultValue={''}
+									{...field}
+									onChange={(e) => setFile(e.target.files?.[0])}
 								/>
 							</FormControl>
 							<FormMessage />
