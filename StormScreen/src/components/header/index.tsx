@@ -55,9 +55,9 @@ export default function Header() {
 			if (user) {
 				const email = user.email,
 					displayName = user.displayName,
-					// token = user.refreshToken,
+					photoURL = user.photoURL,
 					id = user.uid
-				dispatch(setUser({ email, displayName, id }))
+				dispatch(setUser({ email, displayName, id, photoURL }))
 				isAccReady.current = true
 				localStorage.setItem('isAuth', 'true')
 				setIsUserAuth(true)

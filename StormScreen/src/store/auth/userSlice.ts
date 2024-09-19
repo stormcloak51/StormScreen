@@ -6,7 +6,7 @@ type User = {
 	token: string | null
 	id: number | null
 	username: string | null,
-	photo: string | null
+	photoURL: string | null
 }
 
 const initialState: User = {
@@ -15,7 +15,7 @@ const initialState: User = {
 	token: null,
 	id: null,
 	username: null,
-	photo: null
+	photoURL: null
 }
 
 const userSlice = createSlice({
@@ -27,8 +27,8 @@ const userSlice = createSlice({
 			state.email = action.payload.email;
 			state.token = action.payload.accessToken;
 			state.displayName = action.payload.displayName;
-			state.username = action.payload.username
-			state.photo = action.payload.photoURL
+			state.username = action.payload.username ? action.payload.username : state.username
+			state.photoURL = action.payload.photoURL
 		},
 		deleteUser (state) {
 			state.id = null;
@@ -36,7 +36,7 @@ const userSlice = createSlice({
 			state.token = null;
 			state.displayName = null;
 			state.username = null
-			state.photo = null
+			state.photoURL = null
 		}
 	}
 });

@@ -7,12 +7,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Login from './Login'
 import SignUp from './SignUp'
 
-const signSchema = z.object({
+// eslint-disable-next-line react-refresh/only-export-components
+export const signSchema = z.object({
 	email: z.string().min(5).max(50).email(),
 	displayName: z.string().min(2).max(20),
-	username: z.string().min(3).max(20),
+  username: z.string().min(3).max(20).refine(
+    (value) => ![
+			'!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
+			'-', '_', '=', '+', '[', ']', '{', '}', '|', '\\',
+			';', ':', "'", '"', ',', '.', '<', '>', '/', '?',
+			'`', '~', ' '
+		].some(char => value.includes(char)),
+    {
+      message: "Username cannot contain special characters"
+    }
+  ),
 	password: z.string().min(6).max(20),
-	photo: z.string()
+  photo: z.instanceof(File).optional(),
 })
 const loginSchema = z.object({
 	email: z.string().min(5).max(50),
@@ -23,6 +34,7 @@ const loginSchema = z.object({
 const Auth = () => {
 	const signForm = useForm<z.infer<typeof signSchema>>({
 		resolver: zodResolver(signSchema),
+		mode: 'onBlur',
 	})
 	const loginForm = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),

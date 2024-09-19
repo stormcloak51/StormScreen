@@ -30,7 +30,6 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 	const [reviewValue, setReviewValue] = useState('')
 	const [loading, setLoading] = useState(true)
 	const { displayName, isAuth, photoURL } = useAuth()
-	console.log('phot', photoURL)
 	useEffect(() => {
 		setLoading(true)
 	}, [id])
@@ -43,7 +42,6 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 				const docSnap = await getDoc(docRef)
 				if (docSnap.exists()) {
 					const reviewsData = docSnap.data() as IReviews
-					// console.log(reviewsData)
 					setReviewsData(reviewsData)
 				} else {
 					setReviewsData(null)
@@ -61,6 +59,7 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 	const handleSend = async () => {
 		if (reviewsData) {
 			const reviewsDocRef = doc(db, 'reviews', id)
+			console.log('whj', photoURL)
 			await setDoc(reviewsDocRef, {
 				reviews: [
 					...reviewsData.reviews,
@@ -133,11 +132,14 @@ const Reviews: FC<ReviewId> = ({ id }) => {
 							return (
 								<Card key={index}>
 									<CardHeader className='flex flex-row items-center justify-between'>
-										<Avatar>
-											<AvatarImage src='https://github.com/shadcn.png' />
-											<AvatarFallback>{review.username?.substring(0, 2)}</AvatarFallback>
-										</Avatar>
-										<h3 className='text-xl font-bold font-inter'>{review.username}</h3>
+										<div className='flex items-center gap-2'>
+											<Avatar>
+												<AvatarImage src={review.photoURL!} />
+												<AvatarFallback>{review.username?.substring(0, 2)}</AvatarFallback>
+											</Avatar>
+											<h3 className='text-xl font-bold font-inter'>{review.username}</h3>
+										</div>
+
 										<h3 className='text-xl font-bold font-inter'>
 											Rating: {Math.round(review.rating * 2) / 2}
 										</h3>

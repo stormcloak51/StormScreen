@@ -16,6 +16,7 @@ import MovieDiscover from './pages/movies/MovieDiscover/index.tsx'
 import Auth from './components/auth/index.tsx'
 import Settings from './pages/settings/index.tsx'
 import { Toaster } from './components/ui/toaster.tsx'
+import Profile from './pages/profile/index.tsx'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: 'settings',
         element: <Settings />
+      },
+      {
+        path: 'profile/:username',
+        element: <Profile />
       }
     ],
   },
